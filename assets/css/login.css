@@ -1,0 +1,15 @@
+@media (min-width: 768px) {
+    body {
+        background-image: url("/assets/images/wave-left.svg"), url("/assets/images/wave-right.svg");
+        background-position: left bottom, right top;
+        background-repeat: no-repeat;
+        background-size: 50dvw;
+    }
+
+    .card-dark {
+        background: rgba(26, 26, 26, 0.75);
+        backdrop-filter: blur(15px);
+        border-radius: 20px;
+        box-shadow: -4px 4px 15px 0px rgba(0, 0, 0, 0.35);
+    }
+}

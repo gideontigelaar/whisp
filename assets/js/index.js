@@ -24,3 +24,25 @@ function setButtonLoadingState(buttons, disableButton, loadingAnimation) {
         }
     });
 }
+
+function showError(errorMessage) {
+    const errorContainer = document.getElementById("error-container");
+    const errorText = document.createTextNode(errorMessage);
+
+    errorContainer.innerHTML = "";
+    errorContainer.appendChild(errorText);
+    errorContainer.removeAttribute("style");
+
+    setButtonLoadingState(["login-button", "register-button"], true, false);
+
+    var duration = 1000 + (errorMessage.length * 25);
+
+    setTimeout(() => {
+        errorContainer.style.cssText = "opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden";
+        setButtonLoadingState(["login-button", "register-button"], false, false);
+
+        setTimeout(() => {
+            errorContainer.innerHTML = "An unknown error occurred.";
+        }, 250);
+    }, duration);
+}

@@ -1,3 +1,4 @@
+<?php require_once "../queries/auth.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,6 +24,8 @@
                         <h1 class="d-none d-md-block">Hey, hello 👋</h1>
                         <h4>A place for developers to learn and share.</h4>
                     </div>
+
+                    <div class="alert alert-danger" id="error-container" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;">An unknown error occurred.</div>
 
                     <form method="post" id="login-form">
                         <div class="mb-3">

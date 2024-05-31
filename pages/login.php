@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/login.css">
 
+    <script src="/assets/js/index.js"></script>
     <script src="/assets/js/login-page.js"></script>
 </head>
 <body>
@@ -34,7 +35,7 @@
                             <input class="form-control" type="password" id="login-password" name="login-password" autocomplete="current-password">
                         </div>
 
-                        <button class="btn btn-primary mb-3 w-100" type="button" id="login-button" name="login">Log in</button>
+                        <button class="btn btn-primary mb-3 w-100" type="button" id="login-button" name="login" onclick="loginUser()">Log in</button>
                         <p class="text-center">Don't have an account yet? <u role="button" onclick="toggleLoginForm()">Register.</u></p>
                     </form>
 
@@ -70,7 +71,7 @@
                             <input class="form-control" type="text" id="register-invite-code" name="register-invite-code" autocomplete="off">
                         </div>
 
-                        <button class="btn btn-primary mb-3 w-100" type="button" id="register-button" name="register">Register</button>
+                        <button class="btn btn-primary mb-3 w-100" type="button" id="register-button" name="register" onclick="registerUser()">Register</button>
                         <p class="text-center">Already have an account? <u role="button" onclick="toggleLoginForm()">Log in.</u></p>
                     </form>
                 </div>

@@ -1,15 +1,16 @@
 <?php
-$cred = file_get_contents('../creds.json');
-$cred = json_decode($cred, true);
-$dbhost = $cred['dbhost'];
-$dbname = $cred['dbname'];
-$dbuser = $cred['dbuser'];
-$dbpass = $cred['dbpass'];
-
 try {
+    $creds = json_decode(file_get_contents(__DIR__ . "/../creds.json"), true);
+    $dbhost = $creds['dbhost'];
+    $dbname = $creds['dbname'];
+    $dbuser = $creds['dbuser'];
+    $dbpass = $creds['dbpass'];
+
     $pdo = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    echo "Connection failed";
+    http_response_code(500);
+    echo "An error occurred. Please try again later.";
+    exit();
 }
 ?>

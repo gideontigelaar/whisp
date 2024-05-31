@@ -1,0 +1,17 @@
+Options -Indexes
+
+<Files "creds.json">
+    Order allow,deny
+    Deny from all
+</Files>
+
+RewriteEngine On
+RewriteBase /
+
+DirectoryIndex pages/login.php
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^/]+)/?$ pages/$1.php [L]
+
+ErrorDocument 404 /pages/errors/404.php

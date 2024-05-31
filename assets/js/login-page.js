@@ -20,7 +20,8 @@ function loginUser() {
             if (xhr.status === 200) {
                 location.reload();
             } else {
-                location.reload();
+                var response = JSON.parse(xhr.responseText);
+                showError(response.error);
             }
         }
     }
@@ -44,7 +45,8 @@ function registerUser() {
             if (xhr.status === 200) {
                 location.reload();
             } else {
-                location.reload();
+                var response = JSON.parse(xhr.responseText);
+                showError(response.error);
             }
         }
     }

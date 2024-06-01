@@ -42,7 +42,7 @@ function showError(errorMessage) {
         setButtonLoadingState(["login-button", "register-button"], false, false);
 
         setTimeout(() => {
-            errorContainer.innerHTML = "An unknown error occurred.";
+            errorContainer.innerHTML = "";
         }, 250);
     }, duration);
 }

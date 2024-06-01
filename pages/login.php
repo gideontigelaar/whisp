@@ -1,11 +1,11 @@
-<?php require_once "../queries/auth.php"; ?>
+<?php require_once "../queries/validate-session.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Whisp</title>
+    <title>Whisp | Login</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/styles.css">
@@ -20,12 +20,12 @@
             <div class="col-12 col-md-6 col-xl-5 col-xxl-3 p-4 card-dark">
                 <div class="p-2">
                     <div class="mb-3">
-                        <img class="mb-3" src="/assets/images/logos/whisp-logo-horizontal.svg" width="250px" alt="Whisp logo">
+                        <img class="mb-3" src="/assets/images/logos/whisp-logo-horizontal.svg" width="250" alt="Whisp logo">
                         <h1 class="d-none d-md-block">Hey, hello 👋</h1>
                         <h4>A place for developers to learn and share.</h4>
                     </div>
 
-                    <div class="alert alert-danger" id="error-container" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;">An unknown error occurred.</div>
+                    <div class="alert alert-danger" id="error-container" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;"></div>
 
                     <form method="post" id="login-form">
                         <div class="mb-3">

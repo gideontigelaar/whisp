@@ -33,16 +33,16 @@ function showError(errorMessage) {
     errorContainer.appendChild(errorText);
     errorContainer.removeAttribute("style");
 
-    setButtonLoadingState(["login-button", "register-button"], true, false);
+    setButtonLoadingState(["login-button", "register-button", "post-button"], true, false);
 
     var duration = 1000 + (errorMessage.length * 25);
 
     setTimeout(() => {
         errorContainer.style.cssText = "opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden";
-        setButtonLoadingState(["login-button", "register-button"], false, false);
+        setButtonLoadingState(["login-button", "register-button", "post-button"], false, false);
 
         setTimeout(() => {
             errorContainer.innerHTML = "";
-        }, 250);
+        }, 200);
     }, duration);
 }

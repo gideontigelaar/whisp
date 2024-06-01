@@ -1,14 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
 :root {
-    --primary-color: #3170f6;
-    --primary-color-hover: #2a5ecf;
-    --bg-dark: #1a1a1a;
+    --bg-dark: #16191c;
     --text-light: #fff;
 }
 
 * {
-    transition: 0.25s;
+    transition: 0.2s;
 }
 
 body {
@@ -17,52 +15,16 @@ body {
     font-family: 'Figtree', sans-serif!important;
 }
 
-h1 {
-    font-size: 2.5rem!important;
-    font-weight: 700!important;
-}
-
-h2 {
-    font-size: 2rem!important;
-    font-weight: 600!important;
-}
-
-h3 {
-    font-size: 1.75rem!important;
-    font-weight: 600!important;
-}
-
-h4 {
-    font-size: 1.5rem!important;
-    font-weight: 500!important;
-}
-
-h5 {
-    font-size: 1.25rem!important;
-    font-weight: 500!important;
-}
-
-h6 {
-    font-size: 1rem!important;
-    font-weight: 500!important;
-}
-
-.btn-primary {
-    background-color: var(--primary-color)!important;
-}
-
-.btn-primary:hover {
-    background-color: var(--primary-color-hover)!important;
-}
-
-/* .btn-secondary {
-}
-
-.btn-secondary:hover {
-} */
-
-.ph-fill {
+.ph, .ph-fill {
     font-size: 28px!important;
+}
+
+.nav-link:hover {
+    opacity: 1!important;
+}
+
+.nav-link.active {
+    font-weight: 600;
 }
 
 @keyframes opacity {

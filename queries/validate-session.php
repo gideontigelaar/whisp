@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once "pdo-connect.php";
 
 function validateSession($pdo, $sessionToken)
@@ -11,11 +12,14 @@ function validateSession($pdo, $sessionToken)
 }
 
 if (isset($_COOKIE['session_token'])) {
-    $sessionData = validateSession($pdo, $_COOKIE['session_token']);
-    if ($sessionData && basename($_SERVER['PHP_SELF']) === 'login.php') {
-        header('Location: /home');
-        exit();
-    } elseif (!$sessionData && basename($_SERVER['PHP_SELF']) !== 'login.php') {
+    $validSessionData = validateSession($pdo, $_COOKIE['session_token']);
+    if ($validSessionData) {
+        $_SESSION['user_id'] = $validSessionData['user_id'];
+        if (basename($_SERVER['PHP_SELF']) === 'login.php') {
+            header('Location: /home');
+            exit();
+        }
+    } elseif (basename($_SERVER['PHP_SELF']) !== 'login.php') {
         setcookie('session_token', '', time() - 3600, '/');
         header('Location: /');
         exit();

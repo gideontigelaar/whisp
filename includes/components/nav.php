@@ -1,3 +1,26 @@
+<?php
+session_start();
+require_once "../queries/pdo-connect.php";
+
+$stmt = $pdo->prepare("SELECT username FROM users WHERE user_id = :user_id");
+$stmt->execute(['user_id' => $_SESSION['user_id']]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$userName = $user['username'];
+
+$navLinks = json_decode(file_get_contents(__DIR__ . "/../nav-links.json"), true);
+$currentPage = basename($_SERVER['PHP_SELF']);
+
+function isActiveText($page) {
+    global $currentPage;
+    return ($currentPage === $page) ? 'active' : 'opacity-75';
+}
+
+function isActiveIcon($page) {
+    global $currentPage;
+    return ($currentPage === $page) ? 'ph-fill' : 'ph';
+}
+?>
 <div class="d-none d-sm-flex sticky-top fs-5 p-sm-3 p-xl-4 flex-column justify-content-between bg-dark" style="height: 100dvh;">
     <div>
         <a href="/home">
@@ -6,48 +29,26 @@
         </a>
         <hr>
         <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link px-0 py-3 text-light" href="/home">
-                    <div class="d-flex align-items-center">
-                        <i class="ph-fill ph-house me-xl-3"></i>
-                        <div class="d-none d-xl-block">
-                            Home
+            <?php foreach ($navLinks as $link) { ?>
+                <li class="nav-item">
+                    <a class="nav-link px-0 py-3 text-light <?= isActiveText($link['file']) ?>" href="<?= $link['href'] ?>">
+                        <div class="d-flex gap-xl-3 align-items-center">
+                            <i class="<?= isActiveIcon($link['file']) ?> <?= $link['icon'] ?>"></i>
+                            <div class="d-none d-xl-block"><?= $link['text'] ?></div>
                         </div>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link px-0 py-3 text-light" href="/messages">
-                    <div class="d-flex align-items-center">
-                        <i class="ph-fill ph-chat-circle-dots me-xl-3"></i>
-                        <div class="d-none d-xl-block">
-                            Messages
-                        </div>
-                    </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link px-0 py-3 text-light" href="/">
-                    <div class="d-flex align-items-center">
-                        <i class="ph-fill ph-user me-xl-3"></i>
-                        <div class="d-none d-xl-block">
-                            Profile
-                        </div>
-                    </div>
-                </a>
-            </li>
+                    </a>
+                </li>
+            <?php } ?>
         </ul>
     </div>
     <div>
         <hr>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link px-0 pt-3 text-light" href="/settings">
-                    <div class="d-flex align-items-center justify-content-xl-center">
-                        <div class="d-none d-xl-block text-truncate" style="max-width: 125px;">
-                            ExampleUsername
-                        </div>
-                        <i class="ph-fill ph-gear ms-xl-3"></i>
+                <a class="nav-link px-0 pt-3 text-light <?= isActiveText('settings.php') ?>" href="/settings">
+                    <div class="d-flex align-items-center justify-content-xl-between">
+                        <div class="d-none d-xl-block text-truncate" style="max-width: 140px;"><?= $userName ?></div>
+                        <i class="<?= isActiveIcon('settings.php') ?> ph-gear"></i>
                     </div>
                 </a>
             </li>
@@ -57,31 +58,19 @@
 
 <div class="d-flex d-sm-none fixed-bottom fs-5 px-4 py-1 justify-content-between bg-dark">
     <ul class="nav w-100 justify-content-between">
+        <?php foreach ($navLinks as $link) { ?>
+            <li class="nav-item">
+                <a class="nav-link px-0 text-light <?= isActiveText($link['file']) ?>" href="<?= $link['href'] ?>">
+                    <div class="d-flex align-items-center">
+                        <i class="<?= isActiveIcon($link['file']) ?> <?= $link['icon'] ?>"></i>
+                    </div>
+                </a>
+            </li>
+        <?php } ?>
         <li class="nav-item">
-            <a class="nav-link px-0 text-light" href="/home">
+            <a class="nav-link px-0 text-light <?= isActiveText('settings.php') ?>" href="/settings">
                 <div class="d-flex align-items-center">
-                    <i class="ph-fill ph-house"></i>
-                </div>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link px-0 text-light" href="/messages">
-                <div class="d-flex align-items-center">
-                    <i class="ph-fill ph-chat-circle-dots"></i>
-                </div>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link px-0 text-light" href="/">
-                <div class="d-flex align-items-center">
-                    <i class="ph-fill ph-user"></i>
-                </div>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link px-0 text-light" href="/settings">
-                <div class="d-flex align-items-center">
-                    <i class="ph-fill ph-gear"></i>
+                    <i class="<?= isActiveIcon('settings.php') ?> ph-gear"></i>
                 </div>
             </a>
         </li>

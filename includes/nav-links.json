@@ -1,0 +1,14 @@
+[
+    {
+        "text": "Home",
+        "href": "/home",
+        "file": "home.php",
+        "icon": "ph-house"
+    },
+    {
+        "text": "Messages",
+        "href": "/messages",
+        "file": "messages.php",
+        "icon": "ph-chat-circle-dots"
+    }
+]

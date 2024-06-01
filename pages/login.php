@@ -1,4 +1,4 @@
-<?php require_once "../queries/validate-session.php"; ?>
+<?php require_once "../queries/validate-session.php" ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,52 +30,56 @@
                     <form method="post" id="login-form">
                         <div class="mb-3">
                             <label class="form-label" for="login-username">Username</label>
-                            <input class="form-control" type="text" id="login-username" name="login-username" autocomplete="username">
+                            <input class="form-control" type="text" id="login-username" autocomplete="username">
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label" for="login-password">Password</label>
-                            <input class="form-control" type="password" id="login-password" name="login-password" autocomplete="current-password">
+                            <input class="form-control" type="password" id="login-password" autocomplete="current-password">
                         </div>
 
-                        <button class="btn btn-primary mb-3 w-100" type="button" id="login-button" name="login" onclick="loginUser()">Log in</button>
-                        <p class="text-center">Don't have an account yet? <u role="button" onclick="toggleLoginForm()">Register.</u></p>
+                        <button class="btn btn-primary mb-3 w-100" type="button" id="login-button" onclick="loginUser()">Log in</button>
+                        <div class="text-center">
+                            <span>Don't have an account yet? <u role="button" onclick="toggleLoginForm()">Register.</u></span>
+                        </div>
                     </form>
 
                     <form class="d-none" method="post" id="register-form">
                         <div class="mb-3">
                             <label class="form-label" for="register-username">Username</label>
-                            <input class="form-control" type="text" id="register-username" name="register-username" autocomplete="username">
+                            <input class="form-control" type="text" id="register-username" autocomplete="username">
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" for="register-email">Email</label>
-                            <input class="form-control" type="email" id="register-email" name="register-email" autocomplete="email">
+                            <input class="form-control" type="email" id="register-email" autocomplete="email">
                         </div>
 
                         <div class="row">
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label" for="register-password">Password</label>
-                                    <input class="form-control" type="password" id="register-password" name="register-password" autocomplete="new-password">
+                                    <input class="form-control" type="password" id="register-password" autocomplete="new-password">
                                 </div>
                             </div>
 
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label class="form-label" for="register-password-confirm">Confirm password</label>
-                                    <input class="form-control" type="password" id="register-password-confirm" name="register-password-confirm" autocomplete="new-password">
+                                    <input class="form-control" type="password" id="register-password-confirm" autocomplete="new-password">
                                 </div>
                             </div>
                         </div>
 
                         <div class="mb-4">
                             <label class="form-label" for="register-invite-code">Invite code</label>
-                            <input class="form-control" type="text" id="register-invite-code" name="register-invite-code" autocomplete="off">
+                            <input class="form-control" type="text" id="register-invite-code" autocomplete="off">
                         </div>
 
-                        <button class="btn btn-primary mb-3 w-100" type="button" id="register-button" name="register" onclick="registerUser()">Register</button>
-                        <p class="text-center">Already have an account? <u role="button" onclick="toggleLoginForm()">Log in.</u></p>
+                        <button class="btn btn-primary mb-3 w-100" type="button" id="register-button" onclick="registerUser()">Register</button>
+                        <div class="text-center">
+                            <span>Already have an account? <u role="button" onclick="toggleLoginForm()">Log in.</u>
+                        </span>
                     </form>
                 </div>
             </div>

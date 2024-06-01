@@ -16,7 +16,7 @@ function sendSuccess() {
 }
 
 $username = $_POST['username'] ?? '';
-$email = $_POST['email'] ?? '';
+$email = strtolower($_POST['email']) ?? '';
 $password = $_POST['password'] ?? '';
 $passwordConfirm = $_POST['passwordConfirm'] ?? '';
 $inviteCode = $_POST['inviteCode'] ?? '';
@@ -57,7 +57,7 @@ if (!preg_match('/^(?=.*[a-z])(?=.*[0-9]).{8,}$/', $password)) {
     sendError('Password must be at least 8 characters long and contain a lowercase letter and a number.');
 }
 
-$stmt = $pdo->prepare("SELECT invite_code FROM invites WHERE invite_code = :inviteCode");
+$stmt = $pdo->prepare("SELECT invite_code FROM invites WHERE BINARY invite_code = :inviteCode");
 $stmt->execute(['inviteCode' => $inviteCode]);
 if (!$stmt->fetch(PDO::FETCH_ASSOC)) {
     sendError('Invalid invite code.');

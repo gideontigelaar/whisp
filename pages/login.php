@@ -16,10 +16,10 @@
     <script src="/assets/js/index.js"></script>
     <script src="/assets/js/login-page.js"></script>
 </head>
-<body data-bs-theme="dark">
+<body class="bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
         <div class="row justify-content-center d-flex align-items-center" style="height: 100dvh;">
-            <div class="col-12 col-md-6 col-xl-5 col-xxl-3 p-4 card-dark">
+            <div class="col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 p-4 card rounded-4">
                 <div class="p-2">
                     <div class="mb-3">
                         <img class="mb-3" src="/assets/images/logos/whisp-logo-horizontal.svg" width="250" alt="Whisp logo">

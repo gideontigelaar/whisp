@@ -62,6 +62,10 @@ function likePost(postId) {
     xhr.send('post_id=' + postId);
 }
 
+function sharePost(postId) {
+    navigator.clipboard.writeText(window.location.origin + '/post/' + postId);
+}
+
 function deletePost(postId) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '../../queries/delete-post.php', true);

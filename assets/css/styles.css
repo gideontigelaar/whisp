@@ -1,17 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
-:root {
-    --bg-dark: #16191c;
-    --text-light: #fff;
-}
-
 * {
     transition: 0.2s;
 }
 
 body {
-    background-color: var(--bg-dark)!important;
-    color: var(--text-light)!important;
     font-family: 'Figtree', sans-serif!important;
 }
 

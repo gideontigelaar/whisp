@@ -17,7 +17,7 @@
     <script src="/assets/js/index.js"></script>
     <script src="/assets/js/posts.js"></script>
 </head>
-<body data-bs-theme="dark">
+<body class="bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-sm-auto ps-0">
@@ -45,18 +45,20 @@
                     <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/load-posts.php" ?>
                 </div>
             </div>
-            <div class="col-md-4 col-lg-3 d-none d-md-flex flex-column">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Who to follow</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <div class="col-md-4 col-lg-3 d-none d-md-flex flex-column py-3">
+                <div class="sticky-top">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Who to follow</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
                     </div>
-                </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Who to follow</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Who to follow</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
                     </div>
                 </div>
             </div>

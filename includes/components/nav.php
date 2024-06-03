@@ -21,7 +21,7 @@ function isActiveIcon($page) {
     return ($currentPage === $page) ? 'ph-fill' : 'ph';
 }
 ?>
-<div class="d-none d-sm-flex sticky-top fs-5 p-sm-3 p-xl-4 flex-column justify-content-between overflow-y-auto bg-dark" style="height: 100dvh;">
+<div class="d-none d-sm-flex sticky-top fs-5 p-sm-3 p-xl-4 flex-column justify-content-between overflow-y-auto card" style="height: 100dvh;">
     <div>
         <a href="/home">
             <img class="d-none d-xl-block pb-3" src="/assets/images/logos/whisp-logo-horizontal.svg" width="180" alt="Whisp logo">
@@ -31,7 +31,7 @@ function isActiveIcon($page) {
         <ul class="nav flex-column">
             <?php foreach ($navLinks as $link) { ?>
                 <li class="nav-item">
-                    <a class="nav-link px-0 py-3 text-light <?= isActiveText($link['file']) ?>" href="<?= $link['href'] ?>">
+                    <a class="nav-link px-0 py-3 text-body <?= isActiveText($link['file']) ?>" href="<?= $link['href'] ?>">
                         <div class="d-flex gap-xl-3 align-items-center">
                             <i class="<?= isActiveIcon($link['file']) ?> <?= $link['icon'] ?>"></i>
                             <div class="d-none d-xl-block"><?= $link['text'] ?></div>
@@ -45,7 +45,7 @@ function isActiveIcon($page) {
         <hr>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link px-0 pt-3 text-light <?= isActiveText('settings.php') ?>" href="/settings">
+                <a class="nav-link px-0 pt-3 text-body <?= isActiveText('settings.php') ?>" href="/settings">
                     <div class="d-flex align-items-center justify-content-xl-between">
                         <div class="d-none d-xl-block text-truncate" style="max-width: 140px;"><?= $userName ?></div>
                         <i class="<?= isActiveIcon('settings.php') ?> ph-gear"></i>
@@ -56,11 +56,11 @@ function isActiveIcon($page) {
     </div>
 </div>
 
-<div class="d-flex d-sm-none fixed-bottom fs-5 px-4 py-1 justify-content-between bg-dark">
+<div class="d-flex d-sm-none fixed-bottom fs-5 px-4 py-1 justify-content-between card">
     <ul class="nav w-100 justify-content-between">
         <?php foreach ($navLinks as $link) { ?>
             <li class="nav-item">
-                <a class="nav-link px-0 text-light <?= isActiveText($link['file']) ?>" href="<?= $link['href'] ?>">
+                <a class="nav-link px-0 text-body <?= isActiveText($link['file']) ?>" href="<?= $link['href'] ?>">
                     <div class="d-flex align-items-center">
                         <i class="<?= isActiveIcon($link['file']) ?> <?= $link['icon'] ?>"></i>
                     </div>
@@ -68,7 +68,7 @@ function isActiveIcon($page) {
             </li>
         <?php } ?>
         <li class="nav-item">
-            <a class="nav-link px-0 text-light <?= isActiveText('settings.php') ?>" href="/settings">
+            <a class="nav-link px-0 text-body <?= isActiveText('settings.php') ?>" href="/settings">
                 <div class="d-flex align-items-center">
                     <i class="<?= isActiveIcon('settings.php') ?> ph-gear"></i>
                 </div>

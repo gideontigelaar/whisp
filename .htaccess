@@ -10,6 +10,12 @@ RewriteBase /
 
 DirectoryIndex pages/login.php
 
+RewriteRule ^profile/([a-zA-Z0-9_-]+)$ pages/profile.php?username=$1 [L]
+RewriteRule ^profile$ pages/profile.php [L]
+
+RewriteRule ^post/(\d+)$ pages/post.php?id=$1 [L]
+RewriteRule ^post$ pages/post.php [L]
+
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^([^/]+)/?$ pages/$1.php [L]

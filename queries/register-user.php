@@ -1,5 +1,5 @@
 <?php
-require_once "pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/pdo-connect.php";
 
 function sendError($message) {
     header('Content-Type: application/json');
@@ -18,8 +18,8 @@ function sendSuccess() {
 $username = $_POST['username'] ?? '';
 $email = strtolower($_POST['email']) ?? '';
 $password = $_POST['password'] ?? '';
-$passwordConfirm = $_POST['passwordConfirm'] ?? '';
-$inviteCode = $_POST['inviteCode'] ?? '';
+$passwordConfirm = $_POST['password_confirm'] ?? '';
+$inviteCode = $_POST['invite_code'] ?? '';
 
 if (empty($username) || empty($email) || empty($password) || empty($passwordConfirm) || empty($inviteCode)) {
     sendError('All fields are required.');

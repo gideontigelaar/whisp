@@ -50,5 +50,5 @@ function registerUser() {
             }
         }
     }
-    xhr.send('username=' + username + '&email=' + email + '&password=' + password + '&passwordConfirm=' + passwordConfirm + '&inviteCode=' + inviteCode);
+    xhr.send('username=' + username + '&email=' + email + '&password=' + password + '&password_confirm=' + passwordConfirm + '&invite_code=' + inviteCode);
 }

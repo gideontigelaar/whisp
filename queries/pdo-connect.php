@@ -1,6 +1,6 @@
 <?php
 try {
-    $creds = json_decode(file_get_contents(__DIR__ . "/../creds.json"), true);
+    $creds = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/creds.json"), true);
     $dbhost = $creds['dbhost'];
     $dbname = $creds['dbname'];
     $dbuser = $creds['dbuser'];

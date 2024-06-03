@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/pdo-connect.php";
 
 function validateSession($pdo, $sessionToken)
 {

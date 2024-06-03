@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../queries/pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/pdo-connect.php";
 
 $stmt = $pdo->prepare("SELECT username FROM users WHERE user_id = :user_id");
 $stmt->execute(['user_id' => $_SESSION['user_id']]);
@@ -8,7 +8,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $userName = $user['username'];
 
-$navLinks = json_decode(file_get_contents(__DIR__ . "/../nav-links.json"), true);
+$navLinks = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/includes/nav-links.json"), true);
 $currentPage = basename($_SERVER['PHP_SELF']);
 
 function isActiveText($page) {
@@ -21,7 +21,7 @@ function isActiveIcon($page) {
     return ($currentPage === $page) ? 'ph-fill' : 'ph';
 }
 ?>
-<div class="d-none d-sm-flex sticky-top fs-5 p-sm-3 p-xl-4 flex-column justify-content-between bg-dark" style="height: 100dvh;">
+<div class="d-none d-sm-flex sticky-top fs-5 p-sm-3 p-xl-4 flex-column justify-content-between overflow-y-auto bg-dark" style="height: 100dvh;">
     <div>
         <a href="/home">
             <img class="d-none d-xl-block pb-3" src="/assets/images/logos/whisp-logo-horizontal.svg" width="180" alt="Whisp logo">

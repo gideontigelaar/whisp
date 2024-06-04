@@ -9,10 +9,30 @@ $url = $_SERVER['REQUEST_URI'];
 
 if (strpos($url, '/post') !== false) {
     $post_id = explode('/', $url)[2];
+
+    $stmt = $pdo->prepare("SELECT * FROM posts WHERE post_id = :post_id");
+    $stmt->execute(['post_id' => $post_id]);
+    $post = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$post) {
+        header('Location: /home');
+        exit();
+    }
+
     $stmt = $pdo->prepare("SELECT * FROM posts WHERE reply_to_post_id = :post_id " . (empty($loadedPostsStr) ? "" : "AND post_id NOT IN ($loadedPostsStr)") . " ORDER BY created_at DESC LIMIT $limit");
     $stmt->execute(['post_id' => $post_id]);
 } else if (strpos($url, '/profile') !== false) {
     $user_id = explode('/', $url)[2];
+
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
+    $stmt->execute(['user_id' => $user_id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$user) {
+        header('Location: /home');
+        exit();
+    }
+
     $stmt = $pdo->prepare("SELECT * FROM posts WHERE reply_to_post_id IS NULL AND user_id = :user_id " . (empty($loadedPostsStr) ? "" : "AND post_id NOT IN ($loadedPostsStr)") . " ORDER BY created_at DESC LIMIT $limit");
     $stmt->execute(['user_id' => $user_id]);
 } else {

@@ -17,14 +17,15 @@ function sendSuccess() {
 }
 
 $content = $_POST['content'];
+$replyToPostId = $_POST['reply_to_post_id'];
 $userId = $_SESSION['user_id'];
 
 if (empty($content)) {
     sendError('Content is required');
 }
 
-$stmt = $pdo->prepare("INSERT INTO posts (user_id, content) VALUES (:user_id, :content)");
-$stmt->execute(['user_id' => $userId, 'content' => $content]);
+$stmt = $pdo->prepare("INSERT INTO posts (user_id, content, reply_to_post_id) VALUES (:user_id, :content, :reply_to_post_id)");
+$stmt->execute(['user_id' => $userId, 'content' => $content, 'reply_to_post_id' => $replyToPostId]);
 
 sendSuccess();
 ?>

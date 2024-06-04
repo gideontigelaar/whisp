@@ -1,4 +1,4 @@
-function createPost() {
+function createPost(replyToPostId) {
     var content = document.getElementById('post-content').value;
     setButtonLoadingState(['post-button'], true, true);
 
@@ -16,7 +16,7 @@ function createPost() {
             }
         }
     }
-    xhr.send('content=' + content);
+    xhr.send('content=' + content + (replyToPostId ? '&reply_to_post_id=' + replyToPostId : ''));
 }
 
 var loadedPosts = [];

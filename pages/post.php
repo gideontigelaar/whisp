@@ -1,4 +1,11 @@
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/validate-session.php" ?>
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/validate-session.php";
+
+$url = $_SERVER['REQUEST_URI'];
+if (strpos($url, '/post') !== false) {
+    $post_id = explode('/', $url)[2];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +36,7 @@
                         <form>
                             <div class="d-flex flex-row gap-3">
                                 <textarea class="form-control" id="post-content" rows="1" maxlength="250" placeholder="Post your reply" style="resize: none;"></textarea>
-                                <button class="btn btn-primary" type="submit" id="post-button" onclick="createPost()">Post</button>
+                                <button class="btn btn-primary" type="submit" id="post-button" onclick="createPost(<?= $post_id ?>)">Post</button>
                             </div>
                         </form>
                     </div>

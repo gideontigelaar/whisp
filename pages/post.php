@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/assets/css/styles.css">
 
     <script src="/assets/js/index.js"></script>
+    <script src="/assets/js/posts.js"></script>
 </head>
 <body class="bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
@@ -23,8 +24,19 @@
                 <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/nav.php" ?>
             </div>
             <div class="col pt-3 pb-5">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <form>
+                            <div class="d-flex flex-row gap-3">
+                                <textarea class="form-control" id="post-content" rows="1" maxlength="250" placeholder="Post your reply" style="resize: none;"></textarea>
+                                <button class="btn btn-primary" type="submit" id="post-button" onclick="createPost()">Post</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 <div id="posts-container">
-                    <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/load-posts.php" ?>
+                    <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/load-posts.php" ?>
                 </div>
             </div>
             <div class="col-md-4 col-lg-3 d-none d-md-flex flex-column py-3">

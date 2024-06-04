@@ -19,15 +19,26 @@ function createPost() {
     xhr.send('content=' + content);
 }
 
-function loadPosts(offset, limit) {
+var loadedPosts = [];
+
+function loadPosts(limit) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '../../includes/components/load-posts.php?offset=' + offset + '&limit=' + limit, true);
+    xhr.open('GET', '../../includes/load-posts.php?limit=' + limit + '&loaded_posts=' + JSON.stringify(loadedPosts), true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 var responseHTML = xhr.responseText;
                 var postsContainer = document.getElementById('posts-container');
                 postsContainer.innerHTML += responseHTML;
+
+                var posts = document.getElementsByClassName('post');
+                for (var i = 0; i < posts.length; i++) {
+                    var post = posts[i];
+                    var postId = post.id.split('-')[1];
+                    if (loadedPosts.indexOf(postId) === -1) {
+                        loadedPosts.push(postId);
+                    }
+                }
             }
         }
     }
@@ -43,9 +54,7 @@ function isScrolledToBottom() {
 
 window.addEventListener('scroll', function() {
     if (isScrolledToBottom()) {
-        var offset = document.getElementsByClassName('post').length;
-        var limit = 15;
-        loadPosts(offset, limit);
+        loadPosts(15);
     }
 });
 

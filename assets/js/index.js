@@ -27,22 +27,25 @@ function setButtonLoadingState(buttons, disableButton, loadingAnimation) {
 
 function showError(errorMessage) {
     const errorContainer = document.getElementById("error-container");
-    const errorText = document.createTextNode(errorMessage);
 
-    errorContainer.innerHTML = "";
-    errorContainer.appendChild(errorText);
-    errorContainer.removeAttribute("style");
+    if (errorContainer) {
+        const errorText = document.createTextNode(errorMessage);
 
-    setButtonLoadingState(["login-button", "register-button", "post-button"], true, false);
+        errorContainer.innerHTML = "";
+        errorContainer.appendChild(errorText);
+        errorContainer.removeAttribute("style");
 
-    var duration = 1000 + (errorMessage.length * 25);
+        setButtonLoadingState(["login-button", "register-button", "post-button"], true, false);
 
-    setTimeout(() => {
-        errorContainer.style.cssText = "opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden";
-        setButtonLoadingState(["login-button", "register-button", "post-button"], false, false);
+        var duration = 1000 + (errorMessage.length * 25);
 
         setTimeout(() => {
-            errorContainer.innerHTML = "";
-        }, 200);
-    }, duration);
+            errorContainer.style.cssText = "opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden";
+            setButtonLoadingState(["login-button", "register-button", "post-button"], false, false);
+
+            setTimeout(() => {
+                errorContainer.innerHTML = "";
+            }, 200);
+        }, duration);
+    }
 }

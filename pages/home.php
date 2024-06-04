@@ -42,7 +42,7 @@
 
                 <h3 class="mt-4">Recent posts</h3>
                 <div id="posts-container">
-                    <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/load-posts.php" ?>
+                    <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/load-posts.php" ?>
                 </div>
             </div>
             <div class="col-md-4 col-lg-3 d-none d-md-flex flex-column py-3">

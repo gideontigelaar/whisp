@@ -10,5 +10,11 @@
         "href": "/messages",
         "file": "messages.php",
         "icon": "ph-chat-circle-dots"
+    },
+    {
+        "text": "Profile",
+        "href": "/profile",
+        "file": "profile.php",
+        "icon": "ph-user"
     }
 ]

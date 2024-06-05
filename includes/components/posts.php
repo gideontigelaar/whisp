@@ -1,7 +1,7 @@
 <div class="card mb-3 post" id="post-<?= $post['post_id'] ?>">
     <div class="card-body">
         <div class="d-flex justify-content-between">
-            <div class="d-flex gap-1 align-items-center" role="button">
+            <div class="d-flex gap-1 align-items-center" role="button" onclick="window.location.href = '/profile/<?= $post['user_id'] ?>'">
                 <i class="ph ph-user-circle text-primary"></i>
                 <span class="fs-5"><?= $userName ?></span>
             </div>
@@ -30,7 +30,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="deletePostModalLabel">Delete post?</h1>
+                                <h1 class="modal-title fs-5" id="deletePostModalLabel">Delete post</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">

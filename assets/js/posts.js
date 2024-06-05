@@ -20,43 +20,66 @@ function createPost(replyToPostId) {
 }
 
 var loadedPosts = [];
+var currentUrl = window.location.pathname;
+var loading = false;
 
-function loadPosts(limit) {
+function loadPosts() {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '../../includes/load-posts.php?limit=' + limit + '&loaded_posts=' + JSON.stringify(loadedPosts), true);
+    xhr.open('GET', '../../includes/load-posts.php?loaded_posts=' + JSON.stringify(loadedPosts) + '&current_url=' + currentUrl, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 var responseHTML = xhr.responseText;
                 var postsContainer = document.getElementById('posts-container');
-                postsContainer.innerHTML += responseHTML;
 
-                var posts = document.getElementsByClassName('post');
-                for (var i = 0; i < posts.length; i++) {
-                    var post = posts[i];
-                    var postId = post.id.split('-')[1];
-                    if (loadedPosts.indexOf(postId) === -1) {
-                        loadedPosts.push(postId);
+                if (responseHTML === '') {
+                    window.removeEventListener('scroll', scrollListener);
+                    if (postsContainer.innerHTML.trim() === '') {
+                        postsContainer.innerHTML += '<div class="text-center opacity-50 py-1">-- There\'s nothing here. --</div>';
+                    } else {
+                        postsContainer.innerHTML += '<div class="text-center opacity-50 py-1">-- That\'s all for now. --</div>';
+                    }
+                } else {
+                    postsContainer.innerHTML += responseHTML;
+                    var posts = document.getElementsByClassName('post');
+                    for (var i = 0; i < posts.length; i++) {
+                        var post = posts[i];
+                        var postId = post.id.split('-')[1];
+                        if (loadedPosts.indexOf(postId) === -1) {
+                            loadedPosts.push(postId);
+                        }
                     }
                 }
             }
+            loading = false;
         }
     }
     xhr.send();
 }
 
-function isScrolledToBottom() {
-    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-    var clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
-    return scrollTop + clientHeight >= scrollHeight;
-}
+document.addEventListener('DOMContentLoaded', function() {
+    var posts = document.getElementsByClassName('post');
+    for (var i = 0; i < posts.length; i++) {
+        var post = posts[i];
+        var postId = post.id.split('-')[1];
+        if (loadedPosts.indexOf(postId) === -1) {
+            loadedPosts.push(postId);
+        }
+    }
 
-window.addEventListener('scroll', function() {
-    if (isScrolledToBottom()) {
-        loadPosts(15);
+    if (document.documentElement.scrollHeight === document.documentElement.clientHeight) {
+        loadPosts();
     }
 });
+
+function scrollListener() {
+    if (!loading && (window.innerHeight + window.scrollY) >= (document.documentElement.offsetHeight - 100)) {
+        loading = true;
+        loadPosts();
+    }
+}
+
+window.addEventListener('scroll', scrollListener);
 
 function likePost(postId) {
     var likeCount = document.getElementById('like-count-' + postId);

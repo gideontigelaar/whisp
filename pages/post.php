@@ -4,6 +4,15 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/validate-session.php";
 $url = $_SERVER['REQUEST_URI'];
 if (strpos($url, '/post') !== false) {
     $post_id = explode('/', $url)[2];
+
+    $stmt = $pdo->prepare("SELECT * FROM posts WHERE post_id = :post_id");
+    $stmt->execute(['post_id' => $post_id]);
+    $post = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$post) {
+        header('Location: /home');
+        exit();
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -31,10 +40,19 @@ if (strpos($url, '/post') !== false) {
                 <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/nav.php" ?>
             </div>
             <div class="col pt-3 pb-5">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="d-flex" role="button" onclick="window.history.back()">
+                        <i class="ph ph-arrow-left"></i>
+                    </div>
+                    <span class="fs-5">Post</span>
+                </div>
+
+                <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/original-post.php" ?>
+
                 <div class="card mb-3">
                     <div class="card-body">
                         <form>
-                            <div class="d-flex flex-row gap-3">
+                            <div class="d-flex gap-3">
                                 <textarea class="form-control" id="post-content" rows="1" maxlength="250" placeholder="Post your reply" style="resize: none;"></textarea>
                                 <button class="btn btn-primary" type="submit" id="post-button" onclick="createPost(<?= $post_id ?>)">Post</button>
                             </div>
@@ -42,26 +60,13 @@ if (strpos($url, '/post') !== false) {
                     </div>
                 </div>
 
+                <h4 class="mt-4">Replies</h4>
                 <div id="posts-container">
                     <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/load-posts.php" ?>
                 </div>
             </div>
             <div class="col-md-4 col-lg-3 d-none d-md-flex flex-column py-3">
-                <div class="sticky-top">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Who to follow</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Who to follow</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
+                <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/cards.php" ?>
             </div>
         </div>
     </div>

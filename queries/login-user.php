@@ -15,15 +15,15 @@ function sendSuccess() {
     exit();
 }
 
-$username = $_POST['username'] ?? '';
+$userName = $_POST['username'] ?? '';
 $password = $_POST['password'] ?? '';
 
-if (empty($username) || empty($password)) {
+if (empty($userName) || empty($password)) {
     sendError('All fields are required.');
 }
 
 $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
-$stmt->execute(['username' => $username]);
+$stmt->execute(['username' => $userName]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user || !password_verify($password, $user['password'])) {

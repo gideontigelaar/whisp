@@ -21,7 +21,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $userName = $user['username'];
 $displayName = $user['display_name'];
-$profilePicture = $user['profile_picture'] ? $user['profile_picture'] : '/assets/images/default-pfp.png';
+$profilePicture = @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
 $bio = $user['bio'];
 $isVerified = $user['is_verified'];
 $createdAt = date('F Y', strtotime($user['created_at']));
@@ -31,8 +31,9 @@ $createdAt = date('F Y', strtotime($user['created_at']));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A place for developers to learn and share.">
 
-    <title>Whisp | Profile</title>
+    <title>Whisp</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -43,6 +44,7 @@ $createdAt = date('F Y', strtotime($user['created_at']));
 
     <script src="/assets/js/index.js"></script>
     <script src="/assets/js/posts.js"></script>
+    <script src="/assets/js/settings.js"></script>
 </head>
 <body class="bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
@@ -73,17 +75,33 @@ $createdAt = date('F Y', strtotime($user['created_at']));
                                 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="editProfileModalLabel">Edit profile</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Edit profile form
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn btn-primary" onclick="editProfile(<?= $user_id ?>)">Save changes</button>
-                                        </div>
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="editProfileModalLabel">Edit profile</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <div class="alert alert-danger" id="error-container" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;"></div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="edit-display-name">Display name</label>
+                                                    <input class="form-control" type="text" id="edit-display-name" value="<?= $displayName ?>">
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="edit-profile-picture">Profile picture</label>
+                                                    <input class="form-control" type="text" id="edit-profile-picture" value="<?= $profilePicture ?>">
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="edit-bio">Bio</label>
+                                                    <textarea class="form-control" id="edit-bio" rows="3" maxlength="150"><?= $bio ?></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button class="btn btn-primary" type="button" id="edit-profile-button" onclick="editProfile(<?= $user_id ?>)">Save changes</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

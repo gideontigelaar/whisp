@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A place for developers to learn and share.">
 
-    <title>Whisp | Login</title>
+    <title>Whisp</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -14,7 +15,7 @@
     <link rel="stylesheet" href="/assets/css/login.css">
 
     <script src="/assets/js/index.js"></script>
-    <script src="/assets/js/login-page.js"></script>
+    <script src="/assets/js/login.js"></script>
 </head>
 <body class="bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">

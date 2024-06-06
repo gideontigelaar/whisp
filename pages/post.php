@@ -20,8 +20,9 @@ if (strpos($url, '/post') !== false) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A place for developers to learn and share.">
 
-    <title>Whisp | Post</title>
+    <title>Whisp</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -51,12 +52,10 @@ if (strpos($url, '/post') !== false) {
 
                 <div class="card mb-3">
                     <div class="card-body">
-                        <form>
-                            <div class="d-flex gap-3">
-                                <textarea class="form-control" id="post-content" rows="1" maxlength="250" placeholder="Post your reply" style="resize: none;"></textarea>
-                                <button class="btn btn-primary" type="submit" id="post-button" onclick="createPost(<?= $post_id ?>)">Post</button>
-                            </div>
-                        </form>
+                        <div class="d-flex gap-3">
+                            <textarea class="form-control" id="post-content" rows="1" maxlength="250" placeholder="Post your reply" style="resize: none;"></textarea>
+                            <button class="btn btn-primary" type="submit" id="post-button" onclick="createPost(<?= $post_id ?>)">Post</button>
+                        </div>
                     </div>
                 </div>
 

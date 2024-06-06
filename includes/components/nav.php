@@ -6,7 +6,7 @@ $stmt = $pdo->prepare("SELECT username FROM users WHERE user_id = :user_id");
 $stmt->execute(['user_id' => $_SESSION['user_id']]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$userName = $user['username'];
+$currentUserName = $user['username'];
 
 $navLinks = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/includes/nav-links.json"), true);
 $currentPage = basename($_SERVER['PHP_SELF']);
@@ -47,7 +47,7 @@ function isActiveIcon($page) {
             <li class="nav-item">
                 <a class="nav-link px-0 pt-3 text-body <?= isActiveText('settings.php') ?>" href="/settings">
                     <div class="d-flex align-items-center justify-content-xl-between">
-                        <div class="d-none d-xl-block text-truncate" style="max-width: 140px;"><?= $userName ?></div>
+                        <div class="d-none d-xl-block text-truncate" style="max-width: 140px;">@<?= $currentUserName ?></div>
                         <i class="<?= isActiveIcon('settings.php') ?> ph-gear"></i>
                     </div>
                 </a>

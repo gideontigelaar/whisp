@@ -16,7 +16,7 @@ if (strpos($url, '/post') !== false) {
 
     $userName = $user['username'];
     $displayName = $user['display_name'];
-    $profilePicture = $user['profile_picture'] ? $user['profile_picture'] : '/assets/images/default-pfp.png';
+    $profilePicture = @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
     $isVerified = $user['is_verified'];
     $content = $post['content'];
     $createdAt = date('M j, Y', strtotime($post['created_at']));

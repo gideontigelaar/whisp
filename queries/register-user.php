@@ -15,23 +15,24 @@ function sendSuccess() {
     exit();
 }
 
-$username = strtolower($_POST['username']) ?? '';
-$display_name = $_POST['username'] ?? '';
+$userName = strtolower($_POST['username']) ?? '';
+$displayName = $_POST['username'] ?? '';
 $email = strtolower($_POST['email']) ?? '';
 $password = $_POST['password'] ?? '';
 $passwordConfirm = $_POST['password_confirm'] ?? '';
 $inviteCode = $_POST['invite_code'] ?? '';
+$bio = 'Hey there, I am a Whisp user!';
 
-if (empty($username) || empty($email) || empty($password) || empty($passwordConfirm) || empty($inviteCode)) {
+if (empty($userName) || empty($email) || empty($password) || empty($passwordConfirm) || empty($inviteCode)) {
     sendError('All fields are required.');
 }
 
-if (strlen($username) < 3 || strlen($username) > 15 || !ctype_alnum($username)) {
+if (strlen($userName) < 3 || strlen($userName) > 15 || !ctype_alnum($userName)) {
     sendError('Username must be between 3 and 15 characters long and contain only letters and numbers.');
 }
 
 $stmt = $pdo->prepare("SELECT username FROM users WHERE username = :username");
-$stmt->execute(['username' => $username]);
+$stmt->execute(['username' => $userName]);
 if ($stmt->fetch(PDO::FETCH_ASSOC)) {
     sendError('Username is already taken.');
 }
@@ -65,8 +66,8 @@ if (!$stmt->fetch(PDO::FETCH_ASSOC)) {
 }
 
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-$stmt = $pdo->prepare("INSERT INTO users (username, display_name, email, password) VALUES (:username, :display_name, :email, :password)");
-$stmt->execute(['username' => $username, 'display_name' => $display_name, 'email' => $email, 'password' => $hashedPassword]);
+$stmt = $pdo->prepare("INSERT INTO users (username, display_name, email, password, bio) VALUES (:username, :display_name, :email, :password, :bio)");
+$stmt->execute(['username' => $userName, 'display_name' => $displayName, 'email' => $email, 'password' => $hashedPassword, 'bio' => $bio]);
 
 sendSuccess();
 ?>

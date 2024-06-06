@@ -94,16 +94,26 @@ function likePost(postId) {
     xhr.send('post_id=' + postId);
 }
 
-function sharePost(postId) {
-    navigator.clipboard.writeText(window.location.origin + '/post/' + postId);
+function sharePost(postId, displayName, userName) {
+    if (navigator.share) {
+        navigator.share({
+            title: displayName + ' (@' + userName + ') on Whisp',
+            url: window.location.origin + '/post/' + postId
+        });
+    } else {
+        navigator.clipboard.writeText(window.location.origin + '/post/' + postId);
+    }
 }
 
 function deletePost(postId) {
+    setButtonLoadingState(['delete-button'], true, true);
+
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '../../queries/delete-post.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
+            setButtonLoadingState(['delete-button'], false, false);
             if (xhr.status === 200) {
                 location.reload();
             } else {

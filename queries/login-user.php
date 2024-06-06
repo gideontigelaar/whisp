@@ -33,8 +33,8 @@ if (!$user || !password_verify($password, $user['password'])) {
 $sessionToken = bin2hex(random_bytes(32));
 $hashedSessionToken = hash('sha256', $sessionToken);
 
-$stmt = $pdo->prepare("INSERT INTO sessions (user_id, session_token) VALUES (:user_id, :session_token)");
-$stmt->execute(['user_id' => $user['user_id'], 'session_token' => $hashedSessionToken]);
+$stmt = $pdo->prepare("INSERT INTO sessions (session_token, user_id, user_agent, ip_address) VALUES (:session_token, :user_id, :user_agent, :ip_address)");
+$stmt->execute(['session_token' => $hashedSessionToken, 'user_id' => $user['user_id'], 'user_agent' => $_SERVER['HTTP_USER_AGENT'], 'ip_address' => $_SERVER['REMOTE_ADDR']]);
 
 $expirationTime = strtotime('+1 month');
 setcookie('session_token', $sessionToken, $expirationTime, "/");

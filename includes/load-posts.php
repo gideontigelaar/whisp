@@ -22,11 +22,14 @@ if (strpos($url, '/post') !== false) {
 $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($posts as $post) {
-    $stmt = $pdo->prepare("SELECT username FROM users WHERE user_id = :user_id");
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
     $stmt->execute(['user_id' => $post['user_id']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $userName = $user['username'];
+    $displayName = $user['display_name'];
+    $profilePicture = $user['profile_picture'] ? $user['profile_picture'] : '/assets/images/default-pfp.png';
+    $isVerified = $user['is_verified'];
     $content = $post['content'];
     $createdAt = date('M j, Y', strtotime($post['created_at']));
     $likeIcon = $post['likes'] && in_array($_SESSION['user_id'], json_decode($post['likes'])) ? 'ph-fill ph-heart' : 'ph ph-heart';

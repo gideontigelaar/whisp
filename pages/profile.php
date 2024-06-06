@@ -15,9 +15,16 @@ if (strpos($url, '/profile') !== false) {
     }
 }
 
-$stmt = $pdo->prepare("SELECT username FROM users WHERE user_id = :user_id");
+$stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
 $stmt->execute(['user_id' => $user_id]);
-$username = $stmt->fetch(PDO::FETCH_ASSOC)['username'];
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$userName = $user['username'];
+$displayName = $user['display_name'];
+$profilePicture = $user['profile_picture'] ? $user['profile_picture'] : '/assets/images/default-pfp.png';
+$bio = $user['bio'];
+$isVerified = $user['is_verified'];
+$createdAt = date('F Y', strtotime($user['created_at']));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,10 +53,22 @@ $username = $stmt->fetch(PDO::FETCH_ASSOC)['username'];
             <div class="col pt-3 pb-5">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <h5 class="card-title mb-0"><?= $username ?></h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex gap-4 align-items-center">
+                                <img class="rounded-circle" src="<?= $profilePicture ?>" width="80" alt="PFP">
+                                <div class="d-flex flex-column">
+                                    <div class="d-flex gap-1 align-items-center">
+                                        <h4 class="mb-0"><?= $displayName ?></h4>
+                                        <?php if ($isVerified) { ?>
+                                            <i class="ph-fill ph-seal-check text-primary"></i>
+                                        <?php } ?>
+                                    </div>
+                                    <span class="opacity-75">@<?= $userName ?></span>
+                                </div>
+                            </div>
+
                             <?php if ($user_id == $_SESSION['user_id']) { ?>
-                                <i class="ph ph-pencil-simple text-primary" role="button" data-bs-toggle="modal" data-bs-target="#editProfileModal"></i>
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit</button>
 
                                 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -69,7 +88,14 @@ $username = $stmt->fetch(PDO::FETCH_ASSOC)['username'];
                                     </div>
                                 </div>
                             <?php } ?>
-                            <p class="card-text"><?= $user['bio'] ?></p>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-8">
+                                <p class="card-text mt-3"><?= $bio ?></p>
+                            </div>
+                            <div class="col-12 col-md-4 text-md-end align-content-md-end">
+                                <p class="card-text mt-3 opacity-75">Joined <?= $createdAt ?></p>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -15,7 +15,8 @@ function sendSuccess() {
     exit();
 }
 
-$username = $_POST['username'] ?? '';
+$username = strtolower($_POST['username']) ?? '';
+$display_name = $_POST['username'] ?? '';
 $email = strtolower($_POST['email']) ?? '';
 $password = $_POST['password'] ?? '';
 $passwordConfirm = $_POST['password_confirm'] ?? '';
@@ -64,8 +65,8 @@ if (!$stmt->fetch(PDO::FETCH_ASSOC)) {
 }
 
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-$stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
-$stmt->execute(['username' => $username, 'email' => $email, 'password' => $hashedPassword]);
+$stmt = $pdo->prepare("INSERT INTO users (username, display_name, email, password) VALUES (:username, :display_name, :email, :password)");
+$stmt->execute(['username' => $username, 'display_name' => $display_name, 'email' => $email, 'password' => $hashedPassword]);
 
 sendSuccess();
 ?>

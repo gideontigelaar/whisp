@@ -24,7 +24,7 @@
             <div class="col-12 col-sm-auto ps-0">
                 <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/nav.php" ?>
             </div>
-            <div class="col pt-3 pb-5">
+            <div class="col mb-5 py-3">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Settings</h5>

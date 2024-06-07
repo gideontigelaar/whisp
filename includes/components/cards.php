@@ -1,4 +1,4 @@
-<div class="sticky-top">
+<div class="sticky-top overflow-y-auto">
     <div class="card mb-3">
         <div class="card-body">
             <h5 class="card-title">Who to follow</h5>
@@ -11,15 +11,15 @@
                 $userId = $user['user_id'];
                 $userName = $user['username'];
                 $displayName = $user['display_name'];
-                $profilePicture = @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
+                $profilePicture = $user['profile_picture'] && @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
                 $bio = $user['bio'];
                 $isVerified = $user['is_verified'];
                 $createdAt = date('F Y', strtotime($user['created_at']));
             ?>
             <div class="py-2 d-flex gap-2 align-items-center" role="button" onclick="window.location.href = '/profile/<?= $userId ?>'">
-                <img class="rounded-circle" src="<?= $profilePicture ?>" width="32" alt="PFP">
-                <div class="d-flex gap-1 align-items-center">
-                    <span class="fs-5"><?= $displayName ?></span>
+                <img class="rounded-circle" src="<?= $profilePicture ?>" width="32" height="32" alt="PFP">
+                <div class="d-flex gap-1 align-items-center text-truncate">
+                    <span class="fs-5 text-truncate"><?= $displayName ?></span>
                     <?php if ($isVerified) { ?>
                         <i class="ph-fill ph-seal-check text-primary" style="font-size: 22px!important;"></i>
                     <?php } ?>

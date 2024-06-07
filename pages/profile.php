@@ -21,7 +21,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $userName = $user['username'];
 $displayName = $user['display_name'];
-$profilePicture = @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
+$profilePicture = $user['profile_picture'] && @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
 $bio = $user['bio'];
 $isVerified = $user['is_verified'];
 $createdAt = date('F Y', strtotime($user['created_at']));
@@ -52,12 +52,12 @@ $createdAt = date('F Y', strtotime($user['created_at']));
             <div class="col-12 col-sm-auto ps-0">
                 <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/nav.php" ?>
             </div>
-            <div class="col pt-3 pb-5">
+            <div class="col mb-5 py-3">
                 <div class="card mb-3">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex gap-4 align-items-center">
-                                <img class="rounded-circle" src="<?= $profilePicture ?>" width="80" alt="PFP">
+                                <img class="rounded-circle" src="<?= $profilePicture ?>" width="80" height="80" alt="PFP">
                                 <div class="d-flex flex-column">
                                     <div class="d-flex gap-1 align-items-center">
                                         <h4 class="mb-0"><?= $displayName ?></h4>
@@ -73,7 +73,7 @@ $createdAt = date('F Y', strtotime($user['created_at']));
                                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit</button>
 
                                 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h1 class="modal-title fs-5" id="editProfileModalLabel">Edit profile</h1>
@@ -90,7 +90,7 @@ $createdAt = date('F Y', strtotime($user['created_at']));
 
                                                 <div class="mb-3">
                                                     <label class="form-label" for="edit-profile-picture">Profile picture</label>
-                                                    <input class="form-control" type="text" id="edit-profile-picture" value="<?= $profilePicture ?>">
+                                                    <input class="form-control" type="text" id="edit-profile-picture" value="<?= $profilePicture == '/assets/images/default-pfp.png' ? '' : $profilePicture ?>">
                                                 </div>
 
                                                 <div class="mb-3">
@@ -109,7 +109,7 @@ $createdAt = date('F Y', strtotime($user['created_at']));
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-8">
-                                <p class="card-text mt-3"><?= $bio ?></p>
+                                <p class="card-text mt-3" style="white-space: pre;"><?= $bio ?></p>
                             </div>
                             <div class="col-12 col-md-4 text-md-end align-content-md-end">
                                 <p class="card-text mt-3 opacity-75">Joined <?= $createdAt ?></p>

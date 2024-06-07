@@ -40,7 +40,7 @@ if (strpos($url, '/post') !== false) {
             <div class="col-12 col-sm-auto ps-0">
                 <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/nav.php" ?>
             </div>
-            <div class="col pt-3 pb-5">
+            <div class="col mb-5 py-3">
                 <div class="d-flex align-items-center gap-3 mb-3">
                     <div class="d-flex" role="button" onclick="window.history.back()">
                         <i class="ph ph-arrow-left"></i>

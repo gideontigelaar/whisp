@@ -24,7 +24,7 @@
             <div class="col-12 col-sm-auto ps-0">
                 <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/nav.php" ?>
             </div>
-            <div class="col pt-3 pb-5">
+            <div class="col mb-5 py-3">
                 <div class="card">
                     <div class="card-body">
                         <textarea class="form-control mb-3" id="post-content" rows="3" maxlength="250" placeholder="What is happening?!" style="resize: none;"></textarea>
@@ -33,7 +33,9 @@
                                 <i class="ph ph-image-square text-primary" role="button"></i>
                                 <i class="ph ph-smiley text-primary" role="button"></i>
                             </div>
-                            <div class="text-danger" id="error-container" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;"></div>
+
+                            <div class="text-danger" id="error-container" style="opacity: 0;"></div>
+
                             <button class="btn btn-primary" type="submit" id="post-button" onclick="createPost()">Post</button>
                         </div>
                     </div>

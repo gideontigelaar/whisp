@@ -1,8 +1,8 @@
 <div class="card mb-3 post" id="post-<?= $post['post_id'] ?>">
     <div class="card-body">
-        <div class="d-flex justify-content-between">
-            <div class="d-flex gap-2 align-items-center" role="button" onclick="window.location.href = '/profile/<?= $post['user_id'] ?>'">
-                <img class="rounded-circle" src="<?= $profilePicture ?>" width="32" alt="PFP">
+        <div class="row">
+            <div class="col-12 col-md-8 d-flex gap-2 align-items-center" role="button" onclick="window.location.href = '/profile/<?= $post['user_id'] ?>'">
+                <img class="rounded-circle" src="<?= $profilePicture ?>" width="32" height="32" alt="PFP">
                 <div class="d-flex gap-1 align-items-center">
                     <span class="fs-5"><?= $displayName ?></span>
                     <?php if ($isVerified) { ?>
@@ -11,7 +11,7 @@
                     <span class="opacity-75">@<?= $userName ?></span>
                 </div>
             </div>
-            <div class="d-flex gap-1 align-items-center">
+            <div class="col-12 col-md-4 d-flex gap-1 justify-content-md-end align-items-center mt-1 mt-md-0">
                 <span class="opacity-75"><?= $createdAt ?></span>
             </div>
         </div>
@@ -30,13 +30,13 @@
             <div class="d-flex gap-2">
                 <i class="ph ph-share-fat text-primary" role="button" onclick="sharePost(<?= $post['post_id'] . ', \'' . $displayName . '\', \'' . $userName . '\'' ?>)"></i>
                 <?php if ($_SESSION['user_id'] === $post['user_id']) { ?>
-                    <i class="ph ph-trash text-danger" role="button" data-bs-toggle="modal" data-bs-target="#deletePostModal"></i>
+                    <i class="ph ph-trash text-danger" role="button" data-bs-toggle="modal" data-bs-target="#deletePostModal-<?= $post['post_id'] ?>"></i>
 
-                    <div class="modal fade" id="deletePostModal" tabindex="-1" aria-labelledby="deletePostModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
+                    <div class="modal fade" id="deletePostModal-<?= $post['post_id'] ?>" tabindex="-1" aria-labelledby="deletePostModalLabel-<?= $post['post_id'] ?>" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="deletePostModalLabel">Delete post</h1>
+                                    <h1 class="modal-title fs-5" id="deletePostModalLabel-<?= $post['post_id'] ?>">Delete post</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">

@@ -14,7 +14,7 @@ function editProfile(user_id) {
                 location.reload();
             } else {
                 var response = JSON.parse(xhr.responseText);
-                showError(response.error);
+                showError(response.error, true);
             }
         }
     }

@@ -15,21 +15,25 @@ function sendSuccess() {
     exit();
 }
 
-$user_id = $_POST['user_id'] ?? '';
-$display_name = $_POST['display_name'] ?? '';
-$profile_picture = $_POST['profile_picture'] ?? '';
+$userId = $_POST['user_id'] ?? '';
+$displayName = $_POST['display_name'] ?? '';
+$profilePicture = $_POST['profile_picture'] ?? '';
 $bio = $_POST['bio'] ?? '';
 
-if (empty($user_id) || empty($display_name) || empty($profile_picture) || empty($bio)) {
-    sendError('All fields are required.');
+if (empty($userId) || empty($displayName) || empty($bio)) {
+    sendError('All fields, except profile picture, are required.');
 }
 
-if (strlen($display_name) > 50) {
+if (strlen($displayName) > 50) {
     sendError('Display name is too long.');
 }
 
-if (strlen($profile_picture) > 255) {
+if (strlen($profilePicture) > 255) {
     sendError('Profile picture URL is too long.');
+}
+
+if (!empty($profilePicture) && !@getimagesize($profilePicture)) {
+    sendError('Profile picture URL is invalid.');
 }
 
 if (strlen($bio) > 150) {
@@ -37,7 +41,7 @@ if (strlen($bio) > 150) {
 }
 
 $stmt = $pdo->prepare("UPDATE users SET display_name = :display_name, profile_picture = :profile_picture, bio = :bio WHERE user_id = :user_id");
-$stmt->execute(['display_name' => $display_name, 'profile_picture' => $profile_picture, 'bio' => $bio, 'user_id' => $user_id]);
+$stmt->execute(['display_name' => $displayName, 'profile_picture' => $profilePicture, 'bio' => $bio, 'user_id' => $userId]);
 
 sendSuccess();
 ?>

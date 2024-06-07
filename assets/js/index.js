@@ -25,23 +25,28 @@ function setButtonLoadingState(buttons, disableButton, loadingAnimation) {
     });
 }
 
-function showError(errorMessage) {
+function showError(errorMessage, isAlert) {
     const errorContainer = document.getElementById("error-container");
 
     if (errorContainer) {
         const errorText = document.createTextNode(errorMessage);
+        const buttonIds = ["login-button", "register-button", "post-button", "delete-button", "edit-profile-button"];
 
-        errorContainer.innerHTML = "";
         errorContainer.appendChild(errorText);
         errorContainer.removeAttribute("style");
 
-        setButtonLoadingState(["login-button", "register-button", "post-button", "delete-button", "edit-profile-button"], true, false);
+        setButtonLoadingState(buttonIds, true, false);
 
         var duration = 1000 + (errorMessage.length * 25);
 
         setTimeout(() => {
-            errorContainer.style.cssText = "opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden";
-            setButtonLoadingState(["login-button", "register-button", "post-button", "delete-button", "edit-profile-button"], false, false);
+            if (isAlert) {
+                errorContainer.style.cssText = "opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;";
+            } else {
+                errorContainer.style.cssText = "opacity: 0;";
+            }
+
+            setButtonLoadingState(buttonIds, false, false);
 
             setTimeout(() => {
                 errorContainer.innerHTML = "";

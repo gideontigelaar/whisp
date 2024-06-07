@@ -19,7 +19,7 @@
 </head>
 <body class="bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
-        <div class="row justify-content-center d-flex align-items-center" style="height: 100dvh;">
+        <div class="row d-flex justify-content-center align-items-center" style="height: 100dvh;">
             <div class="col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 p-4 card rounded-4">
                 <div class="p-2">
                     <div class="mb-3">

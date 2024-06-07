@@ -12,7 +12,7 @@ function createPost(replyToPostId) {
                 location.reload();
             } else {
                 var response = JSON.parse(xhr.responseText);
-                showError(response.error);
+                showError(response.error, false);
             }
         }
     }
@@ -94,7 +94,11 @@ function likePost(postId) {
     xhr.send('post_id=' + postId);
 }
 
+let notificationActive = false;
+
 function sharePost(postId, displayName, userName) {
+    if (notificationActive) return;
+
     if (navigator.share) {
         navigator.share({
             title: displayName + ' (@' + userName + ') on Whisp',
@@ -102,6 +106,20 @@ function sharePost(postId, displayName, userName) {
         });
     } else {
         navigator.clipboard.writeText(window.location.origin + '/post/' + postId);
+
+        var copyAlert = document.createElement('small');
+        copyAlert.className = 'd-inline-flex position-fixed bottom-0 end-0 me-2 mb-2 px-2 py-1 fw-semibold text-light bg-success border border-success rounded-2 fade-in-bottom';
+        copyAlert.innerHTML = 'Copied to clipboard';
+        document.body.appendChild(copyAlert);
+        notificationActive = true;
+
+        setTimeout(function() {
+            copyAlert.classList.add('fade-out-bottom');
+            setTimeout(function() {
+                copyAlert.remove();
+                notificationActive = false;
+            }, 300);
+        }, 2000);
     }
 }
 
@@ -118,7 +136,7 @@ function deletePost(postId) {
                 location.reload();
             } else {
                 var response = JSON.parse(xhr.responseText);
-                showError(response.error);
+                showError(response.error, false);
             }
         }
     }

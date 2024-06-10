@@ -3,8 +3,8 @@
         <div class="row">
             <div class="col-12 col-md-8 d-flex gap-2 align-items-center" role="button" onclick="window.location.href = '/profile/<?= $post['user_id'] ?>'">
                 <img class="rounded-circle" src="<?= $profilePicture ?>" width="32" height="32" alt="PFP">
-                <div class="d-flex gap-1 align-items-center">
-                    <span class="fs-5"><?= $displayName ?></span>
+                <div class="d-flex gap-1 align-items-center text-truncate">
+                    <span class="fs-5 text-truncate" style="max-width: 150px;"><?= $displayName ?></span>
                     <?php if ($isVerified) { ?>
                         <i class="ph-fill ph-seal-check text-primary" style="font-size: 22px!important;"></i>
                     <?php } ?>
@@ -15,7 +15,7 @@
                 <span class="opacity-75"><?= $createdAt ?></span>
             </div>
         </div>
-        <p class="mt-1"><?= $content ?></p>
+        <p class="mt-1" style="white-space: pre-wrap; max-width: 400px;"><?= $content ?></p>
         <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex gap-2">
                 <div class="d-flex gap-1 align-items-center" role="button" onclick="likePost(<?= $post['post_id'] ?>)">
@@ -39,9 +39,11 @@
                                     <h1 class="modal-title fs-5" id="deletePostModalLabel-<?= $post['post_id'] ?>">Delete post</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
+
                                 <div class="modal-body">
                                     Are you sure you want to delete this post? This action cannot be undone.
                                 </div>
+
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                     <button type="button" class="btn btn-danger" id="delete-button" onclick="deletePost(<?= $post['post_id'] ?>)">Delete post</button>

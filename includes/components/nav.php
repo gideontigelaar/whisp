@@ -2,22 +2,35 @@
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/pdo-connect.php";
 
-$stmt = $pdo->prepare("SELECT username FROM users WHERE user_id = :user_id");
+$stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
 $stmt->execute(['user_id' => $_SESSION['user_id']]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $currentUserName = $user['username'];
+$currentUserEmail = $user['email'];
 
 $navLinks = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/includes/nav-links.json"), true);
 $currentPage = basename($_SERVER['PHP_SELF']);
 
 function isActiveText($page) {
     global $currentPage;
+
+    $currentUrl = $_SERVER['REQUEST_URI'];
+    if (strpos($currentUrl, '/profile') !== false) {
+        $userId = explode('/', $currentUrl)[2];
+        return ($currentPage === $page && $_SESSION['user_id'] == $userId) ? 'active' : 'opacity-75';
+    }
     return ($currentPage === $page) ? 'active' : 'opacity-75';
 }
 
 function isActiveIcon($page) {
     global $currentPage;
+
+    $currentUrl = $_SERVER['REQUEST_URI'];
+    if (strpos($currentUrl, '/profile') !== false) {
+        $userId = explode('/', $currentUrl)[2];
+        return ($currentPage === $page && $_SESSION['user_id'] == $userId) ? 'ph-fill' : 'ph';
+    }
     return ($currentPage === $page) ? 'ph-fill' : 'ph';
 }
 ?>
@@ -45,10 +58,10 @@ function isActiveIcon($page) {
         <hr>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link px-0 pt-3 text-body <?= isActiveText('settings.php') ?>" href="/settings">
+                <a class="nav-link px-0 pt-3 pb-0 text-body opacity-75" role="button" data-bs-toggle="modal" data-bs-target="#editSettingsModal">
                     <div class="d-flex align-items-center justify-content-xl-between">
                         <div class="d-none d-xl-block text-truncate" style="max-width: 140px;">@<?= $currentUserName ?></div>
-                        <i class="<?= isActiveIcon('settings.php') ?> ph-gear"></i>
+                        <i class="ph ph-gear"></i>
                     </div>
                 </a>
             </li>
@@ -68,11 +81,13 @@ function isActiveIcon($page) {
             </li>
         <?php } ?>
         <li class="nav-item">
-            <a class="nav-link px-0 text-body <?= isActiveText('settings.php') ?>" href="/settings">
+            <a class="nav-link px-0 text-body opacity-75" role="button" data-bs-toggle="modal" data-bs-target="#editSettingsModal">
                 <div class="d-flex align-items-center">
-                    <i class="<?= isActiveIcon('settings.php') ?> ph-gear"></i>
+                    <i class="ph ph-gear"></i>
                 </div>
             </a>
         </li>
     </ul>
 </div>
+
+<?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/settings.php" ?>

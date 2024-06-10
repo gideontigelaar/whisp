@@ -24,13 +24,13 @@
                 <div class="p-2">
                     <div class="mb-3">
                         <img class="mb-3" src="/assets/images/logos/whisp-logo-horizontal.svg" width="250" alt="Whisp logo">
-                        <h1 class="d-none d-md-block">Hey, hello 👋</h1>
-                        <h4>A place for developers to learn and share.</h4>
+                        <p class="h1 d-none d-md-block">Hey, hello 👋</p>
+                        <h1 class="h4">A place for developers to learn and share.</h1>
                     </div>
 
-                    <div class="alert alert-danger" id="error-container" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;"></div>
-
                     <form method="post" id="login-form">
+                        <div class="alert alert-danger" id="login-button-error" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;"></div>
+
                         <div class="mb-3">
                             <label class="form-label" for="login-username">Username</label>
                             <input class="form-control" type="text" id="login-username" autocomplete="username">
@@ -41,13 +41,15 @@
                             <input class="form-control" type="password" id="login-password" autocomplete="current-password">
                         </div>
 
-                        <button class="btn btn-primary mb-3 w-100" type="button" id="login-button" onclick="loginUser()">Log in</button>
+                        <button class="btn btn-primary mb-3 w-100" type="submit" id="login-button" onclick="loginUser()">Log in</button>
                         <div class="text-center">
                             <span>Don't have an account yet? <u role="button" onclick="toggleLoginForm()">Register.</u></span>
                         </div>
                     </form>
 
                     <form class="d-none" method="post" id="register-form">
+                        <div class="alert alert-danger" id="register-button-error" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;"></div>
+
                         <div class="mb-3">
                             <label class="form-label" for="register-username">Username</label>
                             <input class="form-control" type="text" id="register-username" autocomplete="username">
@@ -79,7 +81,7 @@
                             <input class="form-control" type="text" id="register-invite-code" autocomplete="off">
                         </div>
 
-                        <button class="btn btn-primary mb-3 w-100" type="button" id="register-button" onclick="registerUser()">Register</button>
+                        <button class="btn btn-primary mb-3 w-100" type="submit" id="register-button" onclick="registerUser()">Register</button>
                         <div class="text-center">
                             <span>Already have an account? <u role="button" onclick="toggleLoginForm()">Log in.</u>
                         </span>

@@ -27,17 +27,20 @@
             <div class="col mb-5 p-3">
                 <div class="card">
                     <div class="card-body">
-                        <textarea class="form-control mb-3" id="post-content" rows="3" maxlength="250" placeholder="What is happening?!" style="resize: none;"></textarea>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div class="d-flex gap-2">
-                                <i class="ph ph-image-square text-primary" role="button"></i>
-                                <i class="ph ph-smiley text-primary" role="button"></i>
+                        <form method="post">
+                            <textarea class="form-control mb-3" id="post-content" rows="3" maxlength="250" placeholder="What is happening?!" style="resize: none;"></textarea>
+
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex gap-2">
+                                    <i class="ph ph-image-square text-primary" role="button"></i>
+                                    <i class="ph ph-smiley text-primary" role="button"></i>
+                                </div>
+
+                                <div class="text-danger" id="post-button-error" style="opacity: 0;"></div>
+
+                                <button class="btn btn-primary" type="submit" id="post-button" onclick="createPost()">Post</button>
                             </div>
-
-                            <div class="text-danger" id="error-container" style="opacity: 0;"></div>
-
-                            <button class="btn btn-primary" type="submit" id="post-button" onclick="createPost()">Post</button>
-                        </div>
+                        </form>
                     </div>
                 </div>
 

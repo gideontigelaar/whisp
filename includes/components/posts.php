@@ -35,19 +35,21 @@
                     <div class="modal fade" id="deletePostModal-<?= $post['post_id'] ?>" tabindex="-1" aria-labelledby="deletePostModalLabel-<?= $post['post_id'] ?>" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="deletePostModalLabel-<?= $post['post_id'] ?>">Delete post</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
+                                <form method="post">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="deletePostModalLabel-<?= $post['post_id'] ?>">Delete post</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
 
-                                <div class="modal-body">
-                                    Are you sure you want to delete this post? This action cannot be undone.
-                                </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to delete this post? This action cannot be undone.
+                                    </div>
 
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-danger" id="delete-button" onclick="deletePost(<?= $post['post_id'] ?>)">Delete post</button>
-                                </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-danger" id="delete-post-button" onclick="deletePost(<?= $post['post_id'] ?>)">Delete post</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

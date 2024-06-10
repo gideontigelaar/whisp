@@ -21,7 +21,7 @@ function loginUser() {
                 location.reload();
             } else {
                 var response = JSON.parse(xhr.responseText);
-                showError(response.error, true);
+                showError(response.error, true, 'login-button');
             }
         }
     }
@@ -46,7 +46,7 @@ function registerUser() {
                 location.reload();
             } else {
                 var response = JSON.parse(xhr.responseText);
-                showError(response.error, true);
+                showError(response.error, true, 'register-button');
             }
         }
     }

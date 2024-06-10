@@ -12,7 +12,7 @@ function createPost(replyToPostId) {
                 location.reload();
             } else {
                 var response = JSON.parse(xhr.responseText);
-                showError(response.error, false);
+                showError(response.error, true, 'post-button');
             }
         }
     }
@@ -124,19 +124,19 @@ function sharePost(postId, displayName, userName) {
 }
 
 function deletePost(postId) {
-    setButtonLoadingState(['delete-button'], true, true);
+    setButtonLoadingState(['delete-post-button'], true, true);
 
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '../../queries/delete-post.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            setButtonLoadingState(['delete-button'], false, false);
+            setButtonLoadingState(['delete-post-button'], false, false);
             if (xhr.status === 200) {
                 location.reload();
             } else {
                 var response = JSON.parse(xhr.responseText);
-                showError(response.error, false);
+                showError(response.error, true, 'delete-post-button');
             }
         }
     }

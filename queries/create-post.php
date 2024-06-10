@@ -16,7 +16,7 @@ function sendSuccess() {
     exit();
 }
 
-$content = $_POST['content'];
+$content = htmlspecialchars($_POST['content']);
 $replyToPostId = $_POST['reply_to_post_id'];
 $userId = $_SESSION['user_id'];
 

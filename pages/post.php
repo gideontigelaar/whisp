@@ -37,10 +37,10 @@ if (strpos($url, '/post') !== false) {
 <body class="bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 col-sm-auto ps-0">
+            <div class="col-12 col-sm-auto ps-0 pe-0 pe-md-3">
                 <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/nav.php" ?>
             </div>
-            <div class="col mb-5 py-3">
+            <div class="col mb-5 p-3">
                 <div class="d-flex align-items-center gap-3 mb-3">
                     <div class="d-flex" role="button" onclick="window.history.back()">
                         <i class="ph ph-arrow-left"></i>
@@ -64,7 +64,7 @@ if (strpos($url, '/post') !== false) {
                     <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/load-posts.php" ?>
                 </div>
             </div>
-            <div class="col-md-4 col-lg-3 d-none d-md-flex flex-column py-3">
+            <div class="col-md-4 col-lg-3 d-none d-md-flex flex-column p-3">
                 <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/cards.php" ?>
             </div>
         </div>

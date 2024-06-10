@@ -49,10 +49,10 @@ $createdAt = date('F Y', strtotime($user['created_at']));
 <body class="bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 col-sm-auto ps-0">
+            <div class="col-12 col-sm-auto ps-0 pe-0 pe-md-3">
                 <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/nav.php" ?>
             </div>
-            <div class="col mb-5 py-3">
+            <div class="col mb-5 p-3">
                 <div class="card mb-3">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
@@ -60,7 +60,7 @@ $createdAt = date('F Y', strtotime($user['created_at']));
                                 <img class="rounded-circle" src="<?= $profilePicture ?>" width="80" height="80" alt="PFP">
                                 <div class="d-flex flex-column">
                                     <div class="d-flex gap-1 align-items-center">
-                                        <h4 class="mb-0"><?= $displayName ?></h4>
+                                        <h4 class="mb-0 text-break"><?= $displayName ?></h4>
                                         <?php if ($isVerified) { ?>
                                             <i class="ph-fill ph-seal-check text-primary"></i>
                                         <?php } ?>
@@ -98,6 +98,7 @@ $createdAt = date('F Y', strtotime($user['created_at']));
                                                     <textarea class="form-control" id="edit-bio" rows="3" maxlength="150"><?= $bio ?></textarea>
                                                 </div>
                                             </div>
+
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                                 <button class="btn btn-primary" type="button" id="edit-profile-button" onclick="editProfile(<?= $user_id ?>)">Save changes</button>
@@ -109,7 +110,7 @@ $createdAt = date('F Y', strtotime($user['created_at']));
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-8">
-                                <p class="card-text mt-3" style="white-space: pre;"><?= $bio ?></p>
+                                <p class="card-text mt-3" style="white-space: pre-wrap; max-width: 400px;"><?= $bio ?></p>
                             </div>
                             <div class="col-12 col-md-4 text-md-end align-content-md-end">
                                 <p class="card-text mt-3 opacity-75">Joined <?= $createdAt ?></p>
@@ -123,7 +124,7 @@ $createdAt = date('F Y', strtotime($user['created_at']));
                     <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/load-posts.php" ?>
                 </div>
             </div>
-            <div class="col-md-4 col-lg-3 d-none d-md-flex flex-column py-3">
+            <div class="col-md-4 col-lg-3 d-none d-md-flex flex-column p-3">
                 <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/cards.php" ?>
             </div>
         </div>

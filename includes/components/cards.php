@@ -1,7 +1,7 @@
 <div class="sticky-top overflow-y-auto">
     <div class="card mb-3">
         <div class="card-body">
-            <h5 class="card-title">Who to follow</h5>
+            <h5 class="card-title">Users to check out</h5>
             <?php
             $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id != :user_id ORDER BY RAND() LIMIT 4");
             $stmt->execute(['user_id' => $_SESSION['user_id']]);

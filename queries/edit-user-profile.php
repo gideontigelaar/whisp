@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/pdo-connect.php";
 
 function sendError($message) {
@@ -16,9 +17,9 @@ function sendSuccess() {
 }
 
 $userId = $_POST['user_id'] ?? '';
-$displayName = $_POST['display_name'] ?? '';
+$displayName = htmlspecialchars($_POST['display_name']) ?? '';
 $profilePicture = $_POST['profile_picture'] ?? '';
-$bio = $_POST['bio'] ?? '';
+$bio = htmlspecialchars($_POST['bio']) ?? '';
 
 if (empty($userId) || empty($displayName) || empty($bio)) {
     sendError('All fields, except profile picture, are required.');
@@ -38,6 +39,10 @@ if (!empty($profilePicture) && !@getimagesize($profilePicture)) {
 
 if (strlen($bio) > 150) {
     sendError('Bio is too long.');
+}
+
+if ($userId !== $_SESSION['user_id']) {
+    sendError('You can only edit your own profile.');
 }
 
 $stmt = $pdo->prepare("UPDATE users SET display_name = :display_name, profile_picture = :profile_picture, bio = :bio WHERE user_id = :user_id");

@@ -52,10 +52,10 @@ if (strpos($url, '/post') !== false) {
 
                 <div class="card mb-3">
                     <div class="card-body">
-                        <div class="d-flex gap-3">
+                        <form class="d-flex gap-3" method="post">
                             <textarea class="form-control" id="post-content" rows="1" maxlength="250" placeholder="Post your reply" style="resize: none;"></textarea>
                             <button class="btn btn-primary" type="submit" id="post-button" onclick="createPost(<?= $post_id ?>)">Post</button>
-                        </div>
+                        </form>
                     </div>
                 </div>
 

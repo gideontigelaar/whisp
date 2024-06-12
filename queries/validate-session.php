@@ -6,7 +6,7 @@ function validateSession($pdo, $sessionToken)
 {
     $currentDateTime = date('Y-m-d H:i:s');
     $hashedSessionToken = hash('sha256', $sessionToken);
-    $stmt = $pdo->prepare("SELECT * FROM sessions WHERE session_token = :session_token AND expires_at > :current_time");
+    $stmt = $pdo->prepare("SELECT user_id FROM sessions WHERE session_token = :session_token AND expires_at > :current_time");
     $stmt->execute(['session_token' => $hashedSessionToken, 'current_time' => $currentDateTime]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }

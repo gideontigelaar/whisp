@@ -1,65 +1,63 @@
 <div class="modal fade" id="editSettingsModal" tabindex="-1" aria-labelledby="editSettingsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
         <div class="modal-content">
-            <form method="post">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="editSettingsModalLabel">Settings</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editSettingsModalLabel">Settings</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-                <div class="modal-body">
-                    <div class="mb-3 d-flex gap-2">
-                        <div>
-                            <input type="radio" class="btn-check theme-btn" name="theme-options" id="dark" autocomplete="off">
-                            <label class="btn bg-black text-white theme-btn-label border border-2" for="dark">Dark Mode</label>
-                        </div>
-
-                        <div>
-                            <input type="radio" class="btn-check theme-btn" name="theme-options" id="light" autocomplete="off">
-                            <label class="btn bg-white text-black theme-btn-label border border-2" for="light">Light Mode</label>
-                        </div>
+            <div class="modal-body">
+                <div class="mb-3 d-flex gap-2">
+                    <div>
+                        <input type="radio" class="btn-check theme-btn" name="theme-options" id="dark" autocomplete="off">
+                        <label class="btn bg-black text-white theme-btn-label border border-2" for="dark">Dark Mode</label>
                     </div>
 
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex flex-column">
-                                <span>Username</span>
-                                <span class="opacity-75 small">@<?= $currentUserName ?></span>
-                            </div>
-                            <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editUsernameModal">Edit</button>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex flex-column">
-                                <span>Email</span>
-                                <span class="opacity-75 small"><?= $currentUserEmail ?></span>
-                            </div>
-                            <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editEmailModal">Edit</button>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex flex-column">
-                                <span>Password</span>
-                                <span class="opacity-75 small">••••••••••••••••</span>
-                            </div>
-                            <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editPasswordModal">Edit</button>
-                        </div>
+                    <div>
+                        <input type="radio" class="btn-check theme-btn" name="theme-options" id="light" autocomplete="off">
+                        <label class="btn bg-white text-black theme-btn-label border border-2" for="light">Light Mode</label>
                     </div>
                 </div>
 
-                <div class="modal-footer justify-content-between">
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete account</button>
-                        <button class="btn btn-secondary" type="button" id="logout-button" onclick="logoutUser()">Log out</button>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-column">
+                            <span>Username</span>
+                            <span class="opacity-75 small">@<?= $currentUserName ?></span>
+                        </div>
+                        <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editUsernameModal">Edit</button>
                     </div>
-
-                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Done</button>
                 </div>
-            </form>
+
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-column">
+                            <span>Email</span>
+                            <span class="opacity-75 small"><?= $currentUserEmail ?></span>
+                        </div>
+                        <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editEmailModal">Edit</button>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-column">
+                            <span>Password</span>
+                            <span class="opacity-75 small">••••••••••••••••</span>
+                        </div>
+                        <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editPasswordModal">Edit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <div class="d-flex gap-2">
+                    <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete account</button>
+                    <button class="btn btn-secondary" type="button" id="logout-button" onclick="logoutUser()">Log out</button>
+                </div>
+
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Done</button>
+            </div>
         </div>
     </div>
 </div>
@@ -92,7 +90,7 @@
 
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editSettingsModal">Cancel</button>
-                    <button class="btn btn-primary" type="submit" id="edit-username-button" onclick="editUsername(<?= $user_id ?>)">Save</button>
+                    <button class="btn btn-primary" type="submit" id="edit-username-button" onclick="editUsername()">Update username</button>
                 </div>
             </form>
         </div>
@@ -124,7 +122,7 @@
 
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editSettingsModal">Cancel</button>
-                    <button class="btn btn-primary" type="submit" id="edit-email-button" onclick="editEmail(<?= $user_id ?>)">Save</button>
+                    <button class="btn btn-primary" type="submit" id="edit-email-button" onclick="editEmail()">Update email</button>
                 </div>
             </form>
         </div>
@@ -168,7 +166,7 @@
 
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editSettingsModal">Cancel</button>
-                    <button class="btn btn-primary" type="submit" id="edit-password-button" onclick="editPassword(<?= $user_id ?>)">Save</button>
+                    <button class="btn btn-primary" type="submit" id="edit-password-button" onclick="editPassword()">Update password</button>
                 </div>
             </form>
         </div>
@@ -200,7 +198,7 @@
 
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editSettingsModal">Cancel</button>
-                    <button class="btn btn-danger" type="submit" id="delete-account-button" onclick="deleteAccount(<?= $user_id ?>)">Delete account</button>
+                    <button class="btn btn-danger" type="submit" id="delete-account-button" onclick="deleteAccount()">Delete account</button>
                 </div>
             </form>
         </div>

@@ -1,4 +1,4 @@
-function editProfile(user_id) {
+function editProfile() {
     var displayName = document.getElementById('edit-display-name').value;
     var profilePicture = document.getElementById('edit-profile-picture').value;
     var bio = document.getElementById('edit-bio').value;
@@ -18,10 +18,10 @@ function editProfile(user_id) {
             }
         }
     }
-    xhr.send('user_id=' + user_id + '&display_name=' + displayName + '&profile_picture=' + profilePicture + '&bio=' + bio);
+    xhr.send('&display_name=' + displayName + '&profile_picture=' + profilePicture + '&bio=' + bio);
 }
 
-function editUsername(user_id) {
+function editUsername() {
     var username = document.getElementById('edit-username').value;
     var password = document.getElementById('edit-username-password').value;
     setButtonLoadingState(['edit-username-button'], true, true);
@@ -40,10 +40,10 @@ function editUsername(user_id) {
             }
         }
     }
-    xhr.send('user_id=' + user_id + '&username=' + username + '&password=' + password);
+    xhr.send('&username=' + username + '&password=' + password);
 }
 
-function editEmail(user_id) {
+function editEmail() {
     var email = document.getElementById('edit-email').value;
     var password = document.getElementById('edit-email-password').value;
     setButtonLoadingState(['edit-email-button'], true, true);
@@ -62,7 +62,7 @@ function editEmail(user_id) {
             }
         }
     }
-    xhr.send('user_id=' + user_id + '&email=' + email + '&password=' + password);
+    xhr.send('&email=' + email + '&password=' + password);
 }
 
 function showPasswords() {
@@ -79,7 +79,7 @@ function showPasswords() {
     }
 }
 
-function editPassword(user_id) {
+function editPassword() {
     var currentPassword = document.getElementById('current-password').value;
     var newPassword = document.getElementById('edit-password').value;
     var newPasswordConfirm = document.getElementById('edit-password-confirm').value;
@@ -99,10 +99,10 @@ function editPassword(user_id) {
             }
         }
     }
-    xhr.send('user_id=' + user_id + '&current_password=' + currentPassword + '&new_password=' + newPassword + '&new_password_confirm=' + newPasswordConfirm);
+    xhr.send('&current_password=' + currentPassword + '&new_password=' + newPassword + '&new_password_confirm=' + newPasswordConfirm);
 }
 
-function deleteAccount(user_id) {
+function deleteAccount() {
     var password = document.getElementById('delete-account-password').value;
     var confirmDeletion = document.getElementById('delete-account-confirm').value;
     setButtonLoadingState(['delete-account-button'], true, true);
@@ -121,17 +121,20 @@ function deleteAccount(user_id) {
             }
         }
     }
-    xhr.send('user_id=' + user_id + '&password=' + password + '&confirm_deletion=' + confirmDeletion);
+    xhr.send('&password=' + password + '&confirm_deletion=' + confirmDeletion);
 }
 
 function logoutUser() {
     localStorage.clear();
-    var cookies = document.cookie.split(';');
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var eqPos = cookie.indexOf('=');
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+
+    setButtonLoadingState(['logout-button'], true, true);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '../../queries/logout-user.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            location.reload();
+        }
     }
-    location.reload();
+    xhr.send();
 }

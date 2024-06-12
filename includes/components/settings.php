@@ -48,6 +48,10 @@
                         <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editPasswordModal">Edit</button>
                     </div>
                 </div>
+
+                <div class="mb-3">
+                    <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#manageSessionsModal">Manage sessions</button>
+                </div>
             </div>
 
             <div class="modal-footer justify-content-between">
@@ -201,6 +205,69 @@
                     <button class="btn btn-danger" type="submit" id="delete-account-button" onclick="deleteAccount()">Delete account</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="manageSessionsModal" tabindex="-1" aria-labelledby="manageSessionsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered align-items-end align-items-sm-start">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="manageSessionsModalLabel">Active sessions</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body d-flex flex-column gap-3">
+                <?php
+                $currentSessionId = hash('sha256', $_COOKIE['session_token']);
+                $currentSession = $pdo->prepare("SELECT * FROM sessions WHERE session_token = :session_token");
+                $currentSession->execute(['session_token' => $currentSessionId]);
+                $currentSessionData = $currentSession->fetch(PDO::FETCH_ASSOC);
+
+                $stmt = $pdo->prepare("SELECT * FROM sessions WHERE user_id = :user_id AND expires_at > :current_time ORDER BY created_at DESC");
+                $stmt->execute(['user_id' => $_SESSION['user_id'], 'current_time' => date('Y-m-d H:i:s')]);
+                $activeSessions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $activeSessions = array_filter($activeSessions, function($session) use ($currentSessionId) {
+                    return $session['session_token'] !== $currentSessionId;
+                });
+
+                array_unshift($activeSessions, $currentSessionData);
+
+                foreach ($activeSessions as $session) {
+                    $deviceIcon = strpos($session['user_agent'], 'Mobile') !== false ? 'ph-device-mobile' : 'ph-desktop';
+                    $deviceName = substr($session['user_agent'], strpos($session['user_agent'], '(') + 1, strpos($session['user_agent'], ';') - strpos($session['user_agent'], '(') - 1);
+                    $isCurrentSession = $currentSessionData['session_token'] === $session['session_token'];
+                    $ipAddress = $session['ip_address'];
+                    $createdAt = date('d-m-Y', strtotime($session['created_at']));
+                ?>
+                <div class="card">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="d-flex gap-2 align-items-center">
+                            <i class="ph <?= $deviceIcon ?> text-primary" style="font-size: 32px!important;"></i>
+                            <div class="d-flex flex-column">
+                                <div class="d-flex gap-1 align-items-center">
+                                    <span><?= $deviceName ?></span>
+                                    <?= $isCurrentSession ? '<span class="badge text-bg-success">Current</span>' : '' ?>
+                                </div>
+                                <span class="opacity-75 small"><?= $ipAddress ?></span>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <span class="opacity-75 small">Created on</span>
+                            <span><?= $createdAt ?></span>
+                        </div>
+                    </div>
+                </div>
+                <?php
+                }
+                ?>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editSettingsModal">Back</button>
+                <button class="btn btn-danger" type="button" id="logout-all-sessions-button" onclick="logoutAllSessions()">Log out of all other sessions</button>
+            </div>
         </div>
     </div>
 </div>

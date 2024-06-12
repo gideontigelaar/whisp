@@ -24,7 +24,7 @@ $displayName = $user['display_name'];
 $profilePicture = $user['profile_picture'] && @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
 $bio = $user['bio'];
 $isVerified = $user['is_verified'];
-$createdAt = date('F Y', strtotime($user['created_at']));
+$userCreatedAt = date('F Y', strtotime($user['created_at']));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -115,7 +115,7 @@ $createdAt = date('F Y', strtotime($user['created_at']));
                                 <p class="card-text mt-3" style="white-space: pre-wrap; max-width: 400px;"><?= $bio ?></p>
                             </div>
                             <div class="col-12 col-md-4 text-md-end align-content-md-end">
-                                <p class="card-text mt-3 opacity-75">Joined <?= $createdAt ?></p>
+                                <p class="card-text mt-3 opacity-75">Joined <?= $userCreatedAt ?></p>
                             </div>
                         </div>
                     </div>

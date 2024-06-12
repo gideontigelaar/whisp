@@ -16,10 +16,10 @@ function loginUser() {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            setButtonLoadingState(['login-button'], false, false);
             if (xhr.status === 200) {
                 location.reload();
             } else {
+                setButtonLoadingState(['login-button'], false, false);
                 var response = JSON.parse(xhr.responseText);
                 showError(response.error, true, 'login-button');
             }
@@ -41,10 +41,10 @@ function registerUser() {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            setButtonLoadingState(['register-button'], false, false);
             if (xhr.status === 200) {
                 location.reload();
             } else {
+                setButtonLoadingState(['register-button'], false, false);
                 var response = JSON.parse(xhr.responseText);
                 showError(response.error, true, 'register-button');
             }

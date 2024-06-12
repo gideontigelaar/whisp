@@ -2,6 +2,9 @@
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/pdo-connect.php";
 
+$post_id = $_POST['post_id'];
+$user_id = $_SESSION['user_id'];
+
 function deleteReplies($pdo, $post_id) {
     $stmt = $pdo->prepare("SELECT post_id FROM posts WHERE reply_to_post_id = :post_id");
     $stmt->execute(['post_id' => $post_id]);
@@ -13,9 +16,6 @@ function deleteReplies($pdo, $post_id) {
         $stmt->execute(['post_id' => $reply['post_id']]);
     }
 }
-
-$post_id = $_POST['post_id'];
-$user_id = $_SESSION['user_id'];
 
 $stmt = $pdo->prepare("SELECT user_id FROM posts WHERE post_id = :post_id");
 $stmt->execute(['post_id' => $post_id]);

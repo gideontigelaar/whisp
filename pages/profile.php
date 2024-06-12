@@ -102,7 +102,7 @@ $createdAt = date('F Y', strtotime($user['created_at']));
 
                                                 <div class="modal-footer">
                                                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
-                                                    <button class="btn btn-primary" type="submit" id="edit-profile-button" onclick="editProfile(<?= $user_id ?>)">Save changes</button>
+                                                    <button class="btn btn-primary" type="submit" id="edit-profile-button" onclick="editProfile()">Update profile</button>
                                                 </div>
                                             </form>
                                         </div>

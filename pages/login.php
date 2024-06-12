@@ -43,7 +43,7 @@
 
                         <button class="btn btn-primary mb-3 w-100" type="submit" id="login-button" onclick="loginUser()">Log in</button>
                         <div class="text-center">
-                            <span>Don't have an account yet? <u role="button" onclick="toggleLoginForm()">Register.</u></span>
+                            <span>Don't have an account yet? <u role="button" onclick="toggleLoginForm()">Create one.</u></span>
                         </div>
                     </form>
 
@@ -81,7 +81,7 @@
                             <input class="form-control" type="text" id="register-invite-code" autocomplete="off">
                         </div>
 
-                        <button class="btn btn-primary mb-3 w-100" type="submit" id="register-button" onclick="registerUser()">Register</button>
+                        <button class="btn btn-primary mb-3 w-100" type="submit" id="register-button" onclick="registerUser()">Create account</button>
                         <div class="text-center">
                             <span>Already have an account? <u role="button" onclick="toggleLoginForm()">Log in.</u>
                         </span>

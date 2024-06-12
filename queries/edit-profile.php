@@ -16,7 +16,7 @@ function sendSuccess() {
     exit();
 }
 
-$userId = $_POST['user_id'] ?? '';
+$userId = $_SESSION['user_id'];
 $displayName = htmlspecialchars($_POST['display_name']) ?? '';
 $profilePicture = $_POST['profile_picture'] ?? '';
 $bio = htmlspecialchars($_POST['bio']) ?? '';
@@ -39,10 +39,6 @@ if (!empty($profilePicture) && !@getimagesize($profilePicture)) {
 
 if (strlen($bio) > 150) {
     sendError('Bio is too long.');
-}
-
-if ($userId !== $_SESSION['user_id']) {
-    sendError('You can only edit your own profile.');
 }
 
 $stmt = $pdo->prepare("UPDATE users SET display_name = :display_name, profile_picture = :profile_picture, bio = :bio WHERE user_id = :user_id");

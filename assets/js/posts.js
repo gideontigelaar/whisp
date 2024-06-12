@@ -7,10 +7,10 @@ function createPost(replyToPostId) {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            setButtonLoadingState(['post-button'], false, false);
             if (xhr.status === 200) {
                 location.reload();
             } else {
+                setButtonLoadingState(['post-button'], false, false);
                 var response = JSON.parse(xhr.responseText);
                 showError(response.error, true, 'post-button');
             }
@@ -131,10 +131,10 @@ function deletePost(postId) {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            setButtonLoadingState(['delete-post-button'], false, false);
             if (xhr.status === 200) {
                 location.reload();
             } else {
+                setButtonLoadingState(['delete-post-button'], false, false);
                 var response = JSON.parse(xhr.responseText);
                 showError(response.error, true, 'delete-post-button');
             }

@@ -9,10 +9,10 @@ function editProfile() {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            setButtonLoadingState(['edit-profile-button'], false, false);
             if (xhr.status === 200) {
                 location.reload();
             } else {
+                setButtonLoadingState(['edit-profile-button'], false, false);
                 var response = JSON.parse(xhr.responseText);
                 showError(response.error, true, 'edit-profile-button');
             }
@@ -31,10 +31,10 @@ function editUsername() {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            setButtonLoadingState(['edit-username-button'], false, false);
             if (xhr.status === 200) {
                 location.reload();
             } else {
+                setButtonLoadingState(['edit-username-button'], false, false);
                 var response = JSON.parse(xhr.responseText);
                 showError(response.error, true, 'edit-username-button');
             }
@@ -53,10 +53,10 @@ function editEmail() {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            setButtonLoadingState(['edit-email-button'], false, false);
             if (xhr.status === 200) {
                 location.reload();
             } else {
+                setButtonLoadingState(['edit-email-button'], false, false);
                 var response = JSON.parse(xhr.responseText);
                 showError(response.error, true, 'edit-email-button');
             }
@@ -90,10 +90,10 @@ function editPassword() {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            setButtonLoadingState(['edit-password-button'], false, false);
             if (xhr.status === 200) {
                 location.reload();
             } else {
+                setButtonLoadingState(['edit-password-button'], false, false);
                 var response = JSON.parse(xhr.responseText);
                 showError(response.error, true, 'edit-password-button');
             }
@@ -112,10 +112,10 @@ function deleteAccount() {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            setButtonLoadingState(['delete-account-button'], false, false);
             if (xhr.status === 200) {
                 logoutUser();
             } else {
+                setButtonLoadingState(['delete-account-button'], false, false);
                 var response = JSON.parse(xhr.responseText);
                 showError(response.error, true, 'delete-account-button');
             }
@@ -126,10 +126,24 @@ function deleteAccount() {
 
 function logoutUser() {
     localStorage.clear();
-
     setButtonLoadingState(['logout-button'], true, true);
+
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '../../queries/logout-user.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            location.reload();
+        }
+    }
+    xhr.send();
+}
+
+function logoutAllSessions() {
+    setButtonLoadingState(['logout-all-sessions-button'], true, true);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '../../queries/logout-all-sessions.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {

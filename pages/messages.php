@@ -48,12 +48,12 @@ if (strpos($url, '/messages') !== false) {
             <div class="col-12 col-sm-auto ps-0 pe-0 pe-md-3">
                 <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/components/nav.php" ?>
             </div>
-            <div class="col mb-5 mb-sm-0 p-3">
+            <div class="col p-0 p-sm-3">
                 <div class="card-group h-100">
-                    <div class="card <?= $user_id ? 'd-none d-md-flex' : 'd-flex' ?> overflow-y-auto user-container-width message-container-height">
-                        <div class="d-flex justify-content-between align-items-center p-3">
-                            <h3 class="card-title m-0">Messages</h3>
-                            <i class="ph ph-note-pencil" role="button" data-bs-toggle="modal" data-bs-target="#newMessageModal" style="font-size: 32px!important;"></i>
+                    <div class="card <?= $user_id ? 'd-none d-md-flex' : 'd-flex' ?> overflow-y-auto user-container-width message-container-height mb-0">
+                        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                            <span class="fs-5">Messages</span>
+                            <i class="ph ph-note-pencil" role="button" data-bs-toggle="modal" data-bs-target="#newMessageModal"></i>
                         </div>
                         <?php
                         $stmt = $pdo->prepare("SELECT DISTINCT LEAST(sender_id, recipient_id) AS user1, GREATEST(sender_id, recipient_id) AS user2 FROM messages WHERE sender_id = :user_id OR recipient_id = :user_id");
@@ -108,10 +108,19 @@ if (strpos($url, '/messages') !== false) {
                         ?>
                     </div>
 
-                    <div class="card <?= $user_id ? 'd-flex' : 'd-none d-md-flex' ?> message-container-height">
+                    <div class="card <?= $user_id ? 'd-flex' : 'd-none d-md-flex' ?> message-container-height mb-0">
                         <?php if ($user_id) { ?>
-                            <div class="card-body d-flex flex-column justify-content-between overflow-y-auto pb-0" id="chat-container">
-                                <div class="d-flex flex-column gap-3">
+                            <div class="d-flex align-items-center gap-3 gap-sm-0 sticky-top bg-body p-3 border-bottom" style="border-top-right-radius: 0.375rem;">
+                                <div class="d-flex d-sm-none" role="button" onclick="window.history.back()">
+                                    <i class="ph ph-arrow-left"></i>
+                                </div>
+                                <div class="d-flex gap-1 align-items-center text-truncate">
+                                    <span class="fs-5 text-truncate"><?= $displayName ?></span>
+                                    <span class="opacity-75">@<?= $userName ?></span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column justify-content-between overflow-y-auto p-0" id="chat-container">
+                                <div class="d-flex flex-column gap-3 px-3 mt-3">
                                     <?php
                                     $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
                                     $stmt->execute(['user_id' => $user_id]);
@@ -172,7 +181,7 @@ if (strpos($url, '/messages') !== false) {
                                     }
                                     ?>
                                 </div>
-                                <form class="d-flex gap-3 mt-3 sticky-bottom py-3 bg-dark" method="post">
+                                <form class="d-flex gap-3 mt-3 pt-3 px-3 sticky-bottom bg-body input-container border-top" method="post" style="border-bottom-right-radius: 0.375rem;">
                                     <textarea class="form-control" id="message-content" rows="1" maxlength="250" placeholder="Message @<?= $userName ?>" style="resize: none;"></textarea>
                                     <button class="btn btn-primary" type="submit" id="message-button" onclick="sendMessage(<?= $user_id ?>)">Send</button>
                                 </form>

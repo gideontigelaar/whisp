@@ -30,6 +30,9 @@ if ($_POST['confirm_deletion'] !== 'DELETE') {
     sendError('Confirmation is not correct.');
 }
 
+$stmt = $pdo->prepare("DELETE FROM messages WHERE sender_id = :user_id OR recipient_id = :user_id");
+$stmt->execute(['user_id' => $user_id]);
+
 function deleteReplies($pdo, $post_id) {
     $stmt = $pdo->prepare("SELECT post_id FROM posts WHERE reply_to_post_id = :post_id");
     $stmt->execute(['post_id' => $post_id]);

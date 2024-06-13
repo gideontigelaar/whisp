@@ -169,13 +169,13 @@ if (strpos($url, '/messages') !== false) {
                                         <div class="card <?= $message['sender_id'] == $_SESSION['user_id'] ? 'text-bg-primary' : 'text-bg-secondary' ?>" style="max-width: 500px;">
                                             <div class="card-body p-2 <?= $message['sender_id'] == $_SESSION['user_id'] ? 'text-end' : 'text-start' ?>">
                                                 <div class="d-flex align-items-center gap-2">
-                                                    <div class="d-flex flex-column text-truncate">
-                                                        <span class="text-truncate"><?= $content ?></span>
+                                                    <div class="d-flex flex-column">
+                                                        <span><?= $content ?></span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <span class="opacity-75 small text-truncate"><?= $messageCreatedAt ?></span>
+                                        <span class="opacity-75 small"><?= $messageCreatedAt ?></span>
                                     </div>
                                     <?php
                                     }

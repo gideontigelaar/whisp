@@ -4,11 +4,21 @@
     }
 }
 
-.message-container-height {
-    height: calc(100dvh - 5.8rem);
+.input-container {
+    padding-bottom: 64px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 576px) {
+    .input-container {
+        padding-bottom: 1rem;
+    }
+}
+
+.message-container-height {
+    height: 100dvh;
+}
+
+@media (min-width: 576px) {
     .message-container-height {
         height: calc(100dvh - 2rem);
     }

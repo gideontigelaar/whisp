@@ -1,4 +1,4 @@
-<div class="sticky-top overflow-y-auto">
+<div class="sticky-top overflow-y-auto pt-3">
     <div class="card mb-3">
         <div class="card-body">
             <h5 class="card-title">Users to check out</h5>

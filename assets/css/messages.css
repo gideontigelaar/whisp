@@ -1,0 +1,15 @@
+@media (min-width: 576px) {
+    .user-container-width {
+        max-width: 250px;
+    }
+}
+
+.message-container-height {
+    height: calc(100dvh - 5.8rem);
+}
+
+@media (min-width: 768px) {
+    .message-container-height {
+        height: calc(100dvh - 2rem);
+    }
+}

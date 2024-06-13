@@ -1,9 +1,11 @@
 function toggleLoginForm() {
-    var loginForm = document.getElementById('login-form');
-    var registerForm = document.getElementById('register-form');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
 
-    loginForm.classList.toggle('d-none');
-    registerForm.classList.toggle('d-none');
+    [loginForm, registerForm].forEach(form => {
+        form.classList.toggle('d-none');
+        form.classList.toggle('d-flex');
+    });
 }
 
 function loginUser() {

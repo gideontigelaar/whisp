@@ -1,1 +1,1 @@
-<span>Error 404</span>
+Error 404

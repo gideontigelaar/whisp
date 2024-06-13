@@ -28,19 +28,47 @@ if (strpos($url, '/messages') !== false) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A place for developers to learn and share.">
+    <meta name="robots" content="noindex">
 
-    <title>Whisp</title>
+    <title>Messages / Whisp</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css">
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/fill/style.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
     <link rel="stylesheet" href="/assets/css/styles.css">
-    <link rel="stylesheet" href="/assets/css/messages.css">
 
     <script src="/assets/js/index.js"></script>
     <script src="/assets/js/messages.js"></script>
+
+    <style>
+        @media (min-width: 576px) {
+            .user-container-width {
+                max-width: 250px;
+            }
+        }
+
+        .input-container {
+            padding-bottom: 64px;
+        }
+
+        @media (min-width: 576px) {
+            .input-container {
+                padding-bottom: 1rem;
+            }
+        }
+
+        .message-container-height {
+            height: 100dvh;
+        }
+
+        @media (min-width: 576px) {
+            .message-container-height {
+                height: calc(100dvh - 2rem);
+            }
+        }
+    </style>
 </head>
 <body class="bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
@@ -114,6 +142,14 @@ if (strpos($url, '/messages') !== false) {
                                 <div class="d-flex d-sm-none" role="button" onclick="window.history.back()">
                                     <i class="ph ph-arrow-left"></i>
                                 </div>
+                                <?php
+                                $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
+                                $stmt->execute(['user_id' => $user_id]);
+                                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                $userName = $user['username'];
+                                $displayName = $user['display_name'];
+                                ?>
                                 <div class="d-flex gap-1 align-items-center text-truncate">
                                     <span class="fs-5 text-truncate"><?= $displayName ?></span>
                                     <span class="opacity-75">@<?= $userName ?></span>
@@ -122,12 +158,6 @@ if (strpos($url, '/messages') !== false) {
                             <div class="card-body d-flex flex-column justify-content-between overflow-y-auto p-0" id="chat-container">
                                 <div class="d-flex flex-column gap-3 px-3 mt-3">
                                     <?php
-                                    $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
-                                    $stmt->execute(['user_id' => $user_id]);
-                                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                                    $userName = $user['username'];
-                                    $displayName = $user['display_name'];
                                     $profilePicture = $user['profile_picture'] && @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
                                     $bio = $user['bio'];
                                     $isVerified = $user['is_verified'];

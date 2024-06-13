@@ -5,86 +5,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A place for developers to learn and share.">
+    <meta name="robots" content="noindex">
 
-    <title>Whisp</title>
+    <title>Login / Whisp</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="/assets/css/styles.css">
-    <link rel="stylesheet" href="/assets/css/login.css">
 
     <script src="/assets/js/index.js"></script>
     <script src="/assets/js/login.js"></script>
+
+    <style>
+        @media (min-width: 768px) {
+            body {
+                background-image: url("/assets/images/wave-left.svg"), url("/assets/images/wave-right.svg");
+                background-repeat: no-repeat;
+                background-position: left bottom, right top;
+                background-size: 50dvw;
+            }
+        }
+    </style>
 </head>
 <body class="bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
-        <div class="row d-flex justify-content-center align-items-center" style="height: 100dvh;">
-            <div class="col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 p-4 card rounded-4">
-                <div class="p-2">
-                    <div class="mb-3">
-                        <img class="mb-3" src="/assets/images/logos/whisp-logo-horizontal.svg" width="250" alt="Whisp logo">
+        <div class="row justify-content-center align-items-center" style="height: 100dvh;">
+            <div class="card col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 rounded-4">
+                <div class="card-body d-flex flex-column gap-3 p-4">
+                    <img src="/assets/images/logos/whisp-logo-horizontal.svg" alt="Whisp logo" width="250">
+
+                    <div>
                         <p class="h1 d-none d-md-block">Hey, hello 👋</p>
-                        <h1 class="h4">A place for developers to learn and share.</h1>
+                        <h1 class="h4">A place for developers to<br>learn and share.</h1>
                     </div>
 
-                    <form method="post" id="login-form">
+                    <form method="post" class="d-flex flex-column m-0" id="login-form">
                         <div class="alert alert-danger" id="login-button-error" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;"></div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="login-username">Username</label>
-                            <input class="form-control" type="text" id="login-username" autocomplete="username">
+                            <label for="login-username" class="form-label">Username</label>
+                            <input type="text" id="login-username" class="form-control" autocomplete="username">
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label" for="login-password">Password</label>
-                            <input class="form-control" type="password" id="login-password" autocomplete="current-password">
+                        <div class="mb-3">
+                            <label for="login-password" class="form-label">Password</label>
+                            <input type="password" id="login-password" class="form-control" autocomplete="current-password">
                         </div>
 
-                        <button class="btn btn-primary mb-3 w-100" type="submit" id="login-button" onclick="loginUser()">Log in</button>
+                        <button type="submit" class="btn btn-primary w-100 mb-3" id="login-button" onclick="loginUser()">Log in</button>
+
                         <div class="text-center">
-                            <span>Don't have an account yet? <u role="button" onclick="toggleLoginForm()">Create one.</u></span>
+                            <span>Don't have an account? <u role="button" onclick="toggleLoginForm()">Create one.</u></span>
                         </div>
                     </form>
 
-                    <form class="d-none" method="post" id="register-form">
+                    <form method="post" class="d-none flex-column m-0" id="register-form">
                         <div class="alert alert-danger" id="register-button-error" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;"></div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="register-username">Username</label>
-                            <input class="form-control" type="text" id="register-username" autocomplete="username">
+                            <label for="register-username" class="form-label">Username</label>
+                            <input type="text" id="register-username" class="form-control" autocomplete="username">
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="register-email">Email</label>
-                            <input class="form-control" type="email" id="register-email" autocomplete="email">
+                            <label for="register-email" class="form-label">Email</label>
+                            <input type="email" id="register-email" class="form-control" autocomplete="email">
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col-6">
-                                <div class="mb-3">
-                                    <label class="form-label" for="register-password">Password</label>
-                                    <input class="form-control" type="password" id="register-password" autocomplete="new-password">
-                                </div>
+                                <label for="register-password" class="form-label">Password</label>
+                                <input type="password" id="register-password" class="form-control" autocomplete="new-password">
                             </div>
 
                             <div class="col-6">
-                                <div class="mb-3">
-                                    <label class="form-label" for="register-password-confirm">Confirm password</label>
-                                    <input class="form-control" type="password" id="register-password-confirm" autocomplete="new-password">
-                                </div>
+                                <label for="register-password-confirm" class="form-label">Confirm password</label>
+                                <input type="password" id="register-password-confirm" class="form-control" autocomplete="new-password">
                             </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label" for="register-invite-code">Invite code</label>
-                            <input class="form-control" type="text" id="register-invite-code" autocomplete="off">
+                        <div class="mb-3">
+                            <label for="register-invite-code" class="form-label">Invite code</label>
+                            <input type="text" id="register-invite-code" class="form-control" autocomplete="off">
                         </div>
 
-                        <button class="btn btn-primary mb-3 w-100" type="submit" id="register-button" onclick="registerUser()">Create account</button>
+
+                        <button type="submit" class="btn btn-primary w-100 mb-3" id="register-button" onclick="registerUser()">Create account</button>
+
                         <div class="text-center">
-                            <span>Already have an account? <u role="button" onclick="toggleLoginForm()">Log in.</u>
-                        </span>
+                            <span>Already have an account? <u role="button" onclick="toggleLoginForm()">Log in.</u></span>
+                        </div>
                     </form>
                 </div>
             </div>

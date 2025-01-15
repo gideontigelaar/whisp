@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/pdo-connect.php";
 
 function sendError($message) {
     header('Content-Type: application/json');
@@ -17,21 +17,21 @@ function sendSuccess() {
 }
 
 $user_id = $_SESSION['user_id'] ?? '';
-$email = strtolower($_POST['email']) ?? '';
+$username = strtolower($_POST['username']) ?? '';
 $password = $_POST['password'] ?? '';
 
-if (empty($email) || empty($password)) {
+if (empty($username) || empty($password)) {
     sendError('All fields are required.');
 }
 
-if (strlen($email) > 100 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    sendError('Email is not valid.');
+if (strlen($username) < 3 || strlen($username) > 15 || !ctype_alnum($username)) {
+    sendError('Username must be between 3 and 15 characters long and contain only letters and numbers.');
 }
 
-$stmt = $pdo->prepare("SELECT email FROM users WHERE email = :email");
-$stmt->execute(['email' => $email]);
+$stmt = $pdo->prepare("SELECT username FROM users WHERE username = :username");
+$stmt->execute(['username' => $username]);
 if ($stmt->fetch(PDO::FETCH_ASSOC)) {
-    sendError('Email is already taken.');
+    sendError('Username is already taken.');
 }
 
 $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
@@ -42,8 +42,8 @@ if (!$user || !password_verify($password, $user['password'])) {
     sendError('Invalid password.');
 }
 
-$stmt = $pdo->prepare("UPDATE users SET email = :email WHERE user_id = :user_id");
-$stmt->execute(['email' => $email, 'user_id' => $user_id]);
+$stmt = $pdo->prepare("UPDATE users SET username = :username WHERE user_id = :user_id");
+$stmt->execute(['username' => $username, 'user_id' => $user_id]);
 
 sendSuccess();
 ?>

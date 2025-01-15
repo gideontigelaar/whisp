@@ -3,7 +3,7 @@ function createPost(replyToPostId) {
     setButtonLoadingState(['post-button'], true, true);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/create-post.php', true);
+    xhr.open('POST', '../../api/create-post.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
@@ -89,7 +89,7 @@ function likePost(postId) {
     likeIcon.className = likeValue === 1 ? 'ph-fill ph-heart text-primary' : 'ph ph-heart text-primary';
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/like-post.php', true);
+    xhr.open('POST', '../../api/like-post.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.send('post_id=' + postId);
 }
@@ -127,7 +127,7 @@ function deletePost(postId) {
     setButtonLoadingState(['delete-post-button'], true, true);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/delete-post.php', true);
+    xhr.open('POST', '../../api/delete-post.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {

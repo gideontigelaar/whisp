@@ -10,7 +10,7 @@ function sendMessage(user_id) {
     setButtonLoadingState(['message-button'], true, true);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/send-message.php', true);
+    xhr.open('POST', '../../api/send-message.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
@@ -32,7 +32,7 @@ function sendNewMessage() {
     setButtonLoadingState(['new-message-button'], true, true);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/send-new-message.php', true);
+    xhr.open('POST', '../../api/send-new-message.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {

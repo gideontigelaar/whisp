@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/pdo-connect.php";
 
 $url = isset($_GET['current_url']) ? $_GET['current_url'] : $_SERVER['REQUEST_URI'];
 

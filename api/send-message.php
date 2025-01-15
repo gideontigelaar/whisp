@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/pdo-connect.php";
 
 function sendError($message) {
     header('Content-Type: application/json');
@@ -17,15 +17,15 @@ function sendSuccess() {
 }
 
 $content = htmlspecialchars($_POST['content']);
-$replyToPostId = $_POST['reply_to_post_id'];
-$userId = $_SESSION['user_id'];
+$recipientId = $_POST['recipient_id'];
+$senderId = $_SESSION['user_id'];
 
 if (empty($content)) {
     sendError('Content is required');
 }
 
-$stmt = $pdo->prepare("INSERT INTO posts (user_id, content, reply_to_post_id) VALUES (:user_id, :content, :reply_to_post_id)");
-$stmt->execute(['user_id' => $userId, 'content' => $content, 'reply_to_post_id' => $replyToPostId]);
+$stmt = $pdo->prepare("INSERT INTO messages (sender_id, recipient_id, content) VALUES (:sender_id, :recipient_id, :content)");
+$stmt->execute(['sender_id' => $senderId, 'recipient_id' => $recipientId, 'content' => $content]);
 
 sendSuccess();
 ?>

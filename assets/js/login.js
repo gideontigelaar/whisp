@@ -14,7 +14,7 @@ function loginUser() {
     setButtonLoadingState(['login-button'], true, true);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/login-user.php', true);
+    xhr.open('POST', '../../api/login-user.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
@@ -39,7 +39,7 @@ function registerUser() {
     setButtonLoadingState(['register-button'], true, true);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/register-user.php', true);
+    xhr.open('POST', '../../api/register-user.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {

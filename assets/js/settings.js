@@ -5,7 +5,7 @@ function editProfile() {
     setButtonLoadingState(['edit-profile-button'], true, true);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/edit-profile.php', true);
+    xhr.open('POST', '../../api/edit-profile.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
@@ -27,7 +27,7 @@ function editUsername() {
     setButtonLoadingState(['edit-username-button'], true, true);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/edit-username.php', true);
+    xhr.open('POST', '../../api/edit-username.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
@@ -49,7 +49,7 @@ function editEmail() {
     setButtonLoadingState(['edit-email-button'], true, true);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/edit-email.php', true);
+    xhr.open('POST', '../../api/edit-email.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
@@ -86,7 +86,7 @@ function editPassword() {
     setButtonLoadingState(['edit-password-button'], true, true);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/edit-password.php', true);
+    xhr.open('POST', '../../api/edit-password.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
@@ -108,7 +108,7 @@ function deleteAccount() {
     setButtonLoadingState(['delete-account-button'], true, true);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/delete-account.php', true);
+    xhr.open('POST', '../../api/delete-account.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
@@ -129,7 +129,7 @@ function logoutUser() {
     setButtonLoadingState(['logout-button'], true, true);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/logout-user.php', true);
+    xhr.open('POST', '../../api/logout-user.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
@@ -143,7 +143,7 @@ function logoutAllSessions() {
     setButtonLoadingState(['logout-all-sessions-button'], true, true);
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../../queries/logout-all-sessions.php', true);
+    xhr.open('POST', '../../api/logout-all-sessions.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {

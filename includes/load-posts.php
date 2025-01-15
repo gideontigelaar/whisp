@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/pdo-connect.php";
 
 $loadedPosts = isset($_GET['loaded_posts']) ? json_decode($_GET['loaded_posts'], true) : [];
 $loadedPostsStr = implode(',', $loadedPosts);

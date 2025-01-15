@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/queries/validate-session.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/validate-session.php";
 
 $url = $_SERVER['REQUEST_URI'];
 if (strpos($url, '/profile') !== false) {
@@ -32,7 +32,6 @@ $userCreatedAt = date('F Y', strtotime($user['created_at']));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A place for developers to learn and share.">
-    <meta name="robots" content="noindex">
 
     <title>Profile / Whisp</title>
 

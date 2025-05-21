@@ -23,7 +23,7 @@ function sendMessage(user_id) {
             }
         }
     }
-    xhr.send('&recipient_id=' + user_id + '&content=' + content);
+    xhr.send('recipient_id=' + user_id + '&content=' + content);
 }
 
 function sendNewMessage() {
@@ -45,5 +45,5 @@ function sendNewMessage() {
             }
         }
     }
-    xhr.send('&recipient_username=' + recipient_username + '&content=' + content);
+    xhr.send('recipient_username=' + recipient_username + '&content=' + content);
 }

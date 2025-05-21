@@ -11,6 +11,53 @@ function toggleLoginForm() {
 function loginUser() {
     var username = document.getElementById('login-username').value;
     var password = document.getElementById('login-password').value;
+    var totpCode = document.getElementById('login-totp-code').value;
+    var totpField = document.getElementById('totp-field');
+
+    if (!totpField.classList.contains('d-none') && !totpCode) {
+        showError('2FA code is required.', true, 'login-button');
+        return;
+    }
+
+    if (totpField.classList.contains('d-none')) {
+        checkIfUserHasTwoFactor(username, password);
+        return;
+    }
+
+    performLogin(username, password, totpCode);
+}
+
+function checkIfUserHasTwoFactor(username, password) {
+    setButtonLoadingState(['login-button'], true, true);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '../../api/check-two-factor.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            setButtonLoadingState(['login-button'], false, false);
+
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.has_two_factor) {
+                    var totpField = document.getElementById('totp-field');
+                    totpField.classList.remove('d-none');
+                    document.getElementById('login-totp-code').focus();
+
+                    document.getElementById('login-button').textContent = 'Complete Login';
+                } else {
+                    performLogin(username, password, '');
+                }
+            } else {
+                var response = JSON.parse(xhr.responseText);
+                showError(response.error, true, 'login-button');
+            }
+        }
+    }
+    xhr.send('username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password));
+}
+
+function performLogin(username, password, totpCode) {
     setButtonLoadingState(['login-button'], true, true);
 
     var xhr = new XMLHttpRequest();
@@ -24,10 +71,19 @@ function loginUser() {
                 setButtonLoadingState(['login-button'], false, false);
                 var response = JSON.parse(xhr.responseText);
                 showError(response.error, true, 'login-button');
+
+                resetLoginForm();
             }
         }
     }
-    xhr.send('username=' + username + '&password=' + password);
+    xhr.send('username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password) + '&totp_code=' + encodeURIComponent(totpCode));
+}
+
+function resetLoginForm() {
+    var totpField = document.getElementById('totp-field');
+    totpField.classList.add('d-none');
+    document.getElementById('login-totp-code').value = '';
+    document.getElementById('login-button').textContent = 'Log in';
 }
 
 function registerUser() {
@@ -52,5 +108,5 @@ function registerUser() {
             }
         }
     }
-    xhr.send('username=' + username + '&email=' + email + '&password=' + password + '&password_confirm=' + passwordConfirm + '&invite_code=' + inviteCode);
+    xhr.send('username=' + username + '&email=' + email + '&password=' + encodeURIComponent(password) + '&password_confirm=' + encodeURIComponent(passwordConfirm) + '&invite_code=' + inviteCode);
 }

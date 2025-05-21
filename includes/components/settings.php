@@ -1,3 +1,9 @@
+
+<?php
+$stmt = $pdo->prepare("SELECT 1 FROM totp_secrets WHERE user_id = :user_id");
+$stmt->execute(['user_id' => $_SESSION['user_id']]);
+$hasTotpSecret = $stmt->fetchColumn() ? true : false;
+?>
 <div class="modal fade" id="editSettingsModal" tabindex="-1" aria-labelledby="editSettingsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
         <div class="modal-content">
@@ -50,6 +56,20 @@
                 </div>
 
                 <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-column">
+                            <span>Two-factor authentication</span>
+                            <span class="opacity-75 small"><?= $hasTotpSecret ? '<span class="text-success">Enabled</span>' : '<span class="text-danger">Disabled</span>' ?></span>
+                        </div>
+                        <?php if ($hasTotpSecret) { ?>
+                            <button class="btn btn-danger" type="button" onclick="disableTwoFactor()">Disable</button>
+                        <?php } else { ?>
+                            <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#twoFactorModal">Edit</button>
+                        <?php } ?>
+                    </div>
+                </div>
+
+                <div class="mb-3">
                     <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#manageSessionsModal">Manage sessions</button>
                 </div>
             </div>
@@ -66,7 +86,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="editUsernameModal" tabindex="-1" aria-labelledby="editUsernameModalLabel" aria-hidden="true">
+<div class="modal fade" id="editUsernameModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="editUsernameModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
         <div class="modal-content">
             <form method="post">
@@ -101,7 +121,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="editEmailModal" tabindex="-1" aria-labelledby="editEmailModalLabel" aria-hidden="true">
+<div class="modal fade" id="editEmailModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="editEmailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
         <div class="modal-content">
             <form method="post">
@@ -133,7 +153,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="editPasswordModal" tabindex="-1" aria-labelledby="editPasswordModalLabel" aria-hidden="true">
+<div class="modal fade" id="editPasswordModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="editPasswordModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
         <div class="modal-content">
             <form method="post">
@@ -177,7 +197,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteAccountModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
         <div class="modal-content">
             <form method="post">
@@ -209,7 +229,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="manageSessionsModal" tabindex="-1" aria-labelledby="manageSessionsModalLabel" aria-hidden="true">
+<div class="modal fade" id="manageSessionsModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="manageSessionsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered align-items-end align-items-sm-start">
         <div class="modal-content">
             <div class="modal-header">
@@ -271,6 +291,54 @@
         </div>
     </div>
 </div>
+
+<?php if (!$hasTotpSecret) { ?>
+    <div class="modal fade" id="twoFactorModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="twoFactorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
+            <div class="modal-content">
+                <form method="post">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="twoFactorModalLabel">Two-factor authentication</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div id="two-factor-password-container">
+                            <div class="alert alert-danger" id="check-password-button-error" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;"></div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="check-password">Password</label>
+                                <input class="form-control" type="password" id="check-password" autocomplete="current-password" placeholder="Enter password to verify identity">
+                            </div>
+                        </div>
+
+                        <div class="d-none" id="setup-two-factor-container">
+                            <div class="alert alert-danger" id="setup-two-factor-button-error" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;"></div>
+
+                            <p class="mb-3">Install an authenticator app on your phone (e.g. Google Authenticator or Authy) and scan the QR code below to link the app to your account. Not possible to scan? <a class="text-link" id="manual-key-link" onclick="toggleQRCode()" style="cursor:pointer;">Enter key manually</a>.</p>
+
+                            <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
+                                <img src="" class="border" id="totp-qr-code" alt="QR Code" style="width: 100%; max-width: 300px;">
+                                <p class="h5 d-none" id="totp-secret"></p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" for="totp-code">Enter code from authenticator app</label>
+                                <input class="form-control" type="text" id="totp-code" autocomplete="off" maxlength="6" inputmode="numeric" placeholder="6-digit verification code">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editSettingsModal">Back</button>
+                        <button class="btn btn-primary" type="submit" id="check-password-button" onclick="checkPassword()">Continue</button>
+                        <button class="btn btn-primary d-none" type="submit" id="setup-two-factor-button" onclick="setupTwoFactor()">Finish setup</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php } ?>
 
 <script src="/assets/js/settings.js"></script>
 

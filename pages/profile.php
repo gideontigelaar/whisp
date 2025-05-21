@@ -72,7 +72,7 @@ $userCreatedAt = date('F Y', strtotime($user['created_at']));
                             <?php if ($user_id == $_SESSION['user_id']) { ?>
                                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit</button>
 
-                                <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="editProfileModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
                                         <div class="modal-content">
                                             <form method="post">

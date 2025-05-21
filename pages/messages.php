@@ -225,7 +225,7 @@ if (strpos($url, '/messages') !== false) {
                     </div>
                 </div>
 
-                <div class="modal fade" id="newMessageModal" tabindex="-1" aria-labelledby="newMessageModalLabel" aria-hidden="true">
+                <div class="modal fade" id="newMessageModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="newMessageModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
                         <div class="modal-content">
                             <form method="post">

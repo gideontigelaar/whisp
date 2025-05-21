@@ -52,6 +52,11 @@
                             <input type="password" id="login-password" class="form-control" autocomplete="current-password">
                         </div>
 
+                        <div class="mb-3 d-none" id="totp-field">
+                            <label for="login-totp-code" class="form-label">2FA Code</label>
+                            <input type="text" id="login-totp-code" class="form-control" autocomplete="one-time-code" maxlength="6" inputmode="numeric">
+                        </div>
+
                         <button type="submit" class="btn btn-primary w-100 mb-3" id="login-button" onclick="loginUser()">Log in</button>
 
                         <div class="text-center">

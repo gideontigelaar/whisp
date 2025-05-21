@@ -18,7 +18,7 @@ function editProfile() {
             }
         }
     }
-    xhr.send('&display_name=' + displayName + '&profile_picture=' + profilePicture + '&bio=' + bio);
+    xhr.send('display_name=' + displayName + '&profile_picture=' + profilePicture + '&bio=' + bio);
 }
 
 function editUsername() {
@@ -40,7 +40,7 @@ function editUsername() {
             }
         }
     }
-    xhr.send('&username=' + username + '&password=' + password);
+    xhr.send('username=' + username + '&password=' + encodeURIComponent(password));
 }
 
 function editEmail() {
@@ -62,7 +62,7 @@ function editEmail() {
             }
         }
     }
-    xhr.send('&email=' + email + '&password=' + password);
+    xhr.send('email=' + email + '&password=' + encodeURIComponent(password));
 }
 
 function showPasswords() {
@@ -99,7 +99,7 @@ function editPassword() {
             }
         }
     }
-    xhr.send('&current_password=' + currentPassword + '&new_password=' + newPassword + '&new_password_confirm=' + newPasswordConfirm);
+    xhr.send('current_password=' + encodeURIComponent(currentPassword) + '&new_password=' + encodeURIComponent(newPassword) + '&new_password_confirm=' + encodeURIComponent(newPasswordConfirm));
 }
 
 function deleteAccount() {
@@ -121,7 +121,7 @@ function deleteAccount() {
             }
         }
     }
-    xhr.send('&password=' + password + '&confirm_deletion=' + confirmDeletion);
+    xhr.send('password=' + encodeURIComponent(password) + '&confirm_deletion=' + confirmDeletion);
 }
 
 function logoutUser() {
@@ -148,6 +148,108 @@ function logoutAllSessions() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             location.reload();
+        }
+    }
+    xhr.send();
+}
+
+function checkPassword() {
+    var password = document.getElementById('check-password').value;
+    setButtonLoadingState(['check-password-button'], true, true);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '../../api/check-password.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            setButtonLoadingState(['check-password-button'], false, false);
+
+            if (xhr.status === 200) {
+                document.getElementById('two-factor-password-container').classList.add('d-none');
+                document.getElementById('check-password-button').classList.add('d-none');
+
+                document.getElementById('setup-two-factor-container').classList.remove('d-none');
+                document.getElementById('setup-two-factor-button').classList.remove('d-none');
+
+                generateTotpSecret();
+            } else {
+                var response = JSON.parse(xhr.responseText);
+                showError(response.error, true, 'check-password-button');
+            }
+        }
+    }
+    xhr.send('password=' + encodeURIComponent(password));
+}
+
+function generateTotpSecret() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '../../api/generate-totp-secret.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                document.getElementById('totp-secret').textContent = response.secret;
+                document.getElementById('totp-qr-code').src = response.qrCode;
+            }
+        }
+    }
+    xhr.send();
+}
+
+function toggleQRCode() {
+    var qrCode = document.getElementById('totp-qr-code');
+    var secret = document.getElementById('totp-secret');
+
+    if (qrCode.classList.contains('d-none')) {
+        qrCode.classList.remove('d-none');
+        secret.classList.add('d-none');
+    } else {
+        qrCode.classList.add('d-none');
+        secret.classList.remove('d-none');
+    }
+}
+
+function setupTwoFactor() {
+    var totpCode = document.getElementById('totp-code').value;
+    var totpSecret = document.getElementById('totp-secret').textContent;
+    setButtonLoadingState(['setup-two-factor-button'], true, true);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '../../api/setup-two-factor.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            setButtonLoadingState(['setup-two-factor-button'], false, false);
+
+            if (xhr.status === 200) {
+                location.reload();
+            } else {
+                var response = JSON.parse(xhr.responseText);
+                showError(response.error, true, 'setup-two-factor-button');
+            }
+        }
+    }
+    xhr.send('totp_code=' + encodeURIComponent(totpCode) + '&totp_secret=' + encodeURIComponent(totpSecret) + '&password=' + encodeURIComponent(document.getElementById('check-password').value));
+}
+
+function disableTwoFactor() {
+    if (!confirm('Are you sure you want to disable two-factor authentication? This will remove the extra layer of security from your account.')) {
+        return;
+    }
+
+    setButtonLoadingState(['disable-two-factor-button'], true, true);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '../../api/disable-two-factor.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            setButtonLoadingState(['disable-two-factor-button'], false, false);
+
+            if (xhr.status === 200) {
+                location.reload();
+            }
         }
     }
     xhr.send();

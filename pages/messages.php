@@ -30,11 +30,11 @@ if (strpos($url, '/messages') !== false) {
 
     <title>Messages / Whisp</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css" integrity="sha384-6p9AefaqUhEVheRlj1mpAkbngHXy9mbYMrIdcIt4Jlc9lOLIablJq3bBsLOjGwZ7" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/fill/style.css" integrity="sha384-pPVoXE8ft+zxKtxIDDI7SfTK6y95NHm4qa+hKEg/hs8VkjW5IP+9/dGOPCbDpUPl" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/styles.css">
 
     <script src="/assets/js/index.js"></script>
@@ -42,6 +42,12 @@ if (strpos($url, '/messages') !== false) {
 
     <style>
         @media (min-width: 576px) {
+            .user-container-width {
+                max-width: 200px;
+            }
+        }
+
+        @media (min-width: 768px) {
             .user-container-width {
                 max-width: 250px;
             }
@@ -76,7 +82,7 @@ if (strpos($url, '/messages') !== false) {
             </div>
             <div class="col p-0 p-sm-3">
                 <div class="card-group h-100">
-                    <div class="card <?= $user_id ? 'd-none d-md-flex' : 'd-flex' ?> overflow-y-auto user-container-width message-container-height mb-0">
+                    <div class="card <?= $user_id ? 'd-none d-sm-flex' : 'd-flex' ?> overflow-y-auto user-container-width message-container-height mb-0">
                         <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
                             <span class="fs-5">Messages</span>
                             <i class="ph ph-note-pencil" role="button" data-bs-toggle="modal" data-bs-target="#newMessageModal"></i>
@@ -134,7 +140,7 @@ if (strpos($url, '/messages') !== false) {
                         ?>
                     </div>
 
-                    <div class="card <?= $user_id ? 'd-flex' : 'd-none d-md-flex' ?> message-container-height mb-0">
+                    <div class="card <?= $user_id ? 'd-flex' : 'd-none d-sm-flex' ?> message-container-height mb-0">
                         <?php if ($user_id) { ?>
                             <div class="d-flex align-items-center gap-3 gap-sm-0 sticky-top bg-body p-3 border-bottom" style="border-top-right-radius: 0.375rem;">
                                 <div class="d-flex d-sm-none" role="button" onclick="window.history.back()">

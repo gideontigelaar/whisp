@@ -1,3 +1,7 @@
+document.addEventListener('DOMContentLoaded', function() {
+    disableButtonWhenEmpty('disable-two-factor-button', ['disable-two-factor-password']);
+});
+
 function editProfile() {
     var displayName = document.getElementById('edit-display-name').value;
     var profilePicture = document.getElementById('edit-profile-picture').value;
@@ -18,7 +22,7 @@ function editProfile() {
             }
         }
     }
-    xhr.send('display_name=' + displayName + '&profile_picture=' + profilePicture + '&bio=' + bio);
+    xhr.send('display_name=' + encodeURIComponent(displayName) + '&profile_picture=' + encodeURIComponent(profilePicture) + '&bio=' + encodeURIComponent(bio));
 }
 
 function editUsername() {
@@ -40,7 +44,7 @@ function editUsername() {
             }
         }
     }
-    xhr.send('username=' + username + '&password=' + encodeURIComponent(password));
+    xhr.send('username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password));
 }
 
 function editEmail() {
@@ -62,7 +66,7 @@ function editEmail() {
             }
         }
     }
-    xhr.send('email=' + email + '&password=' + encodeURIComponent(password));
+    xhr.send('email=' + encodeURIComponent(email) + '&password=' + encodeURIComponent(password));
 }
 
 function showPasswords() {
@@ -121,7 +125,7 @@ function deleteAccount() {
             }
         }
     }
-    xhr.send('password=' + encodeURIComponent(password) + '&confirm_deletion=' + confirmDeletion);
+    xhr.send('password=' + encodeURIComponent(password) + '&confirm_deletion=' + encodeURIComponent(confirmDeletion));
 }
 
 function logoutUser() {
@@ -234,10 +238,7 @@ function setupTwoFactor() {
 }
 
 function disableTwoFactor() {
-    if (!confirm('Are you sure you want to disable two-factor authentication? This will remove the extra layer of security from your account.')) {
-        return;
-    }
-
+    var password = document.getElementById('disable-two-factor-password').value;
     setButtonLoadingState(['disable-two-factor-button'], true, true);
 
     var xhr = new XMLHttpRequest();
@@ -245,12 +246,14 @@ function disableTwoFactor() {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            setButtonLoadingState(['disable-two-factor-button'], false, false);
-
             if (xhr.status === 200) {
                 location.reload();
+            } else {
+                setButtonLoadingState(['disable-two-factor-button'], false, false);
+                var response = JSON.parse(xhr.responseText);
+                showError(response.error, true, 'disable-two-factor-button');
             }
         }
     }
-    xhr.send();
+    xhr.send('password=' + encodeURIComponent(password));
 }

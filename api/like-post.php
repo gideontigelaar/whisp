@@ -1,6 +1,5 @@
 <?php
-session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . "/api/pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/validate-session.php";
 
 $post_id = $_POST['post_id'];
 $user_id = $_SESSION['user_id'];

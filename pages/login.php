@@ -29,8 +29,8 @@
 </head>
 <body class="bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
-        <div class="row justify-content-center align-items-center" style="height: 100dvh;">
-            <div class="card col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 rounded-4">
+        <div class="row justify-content-center align-items-center py-3" style="min-height: 100dvh;">
+            <div class="card col-11 rounded-4 login-card">
                 <div class="card-body d-flex flex-column gap-3 p-4">
                     <img src="/assets/images/logos/whisp-logo-horizontal.svg" alt="Whisp logo" width="250">
 
@@ -52,9 +52,13 @@
                             <input type="password" id="login-password" class="form-control" autocomplete="current-password">
                         </div>
 
-                        <div class="mb-3 d-none" id="totp-field">
-                            <label for="login-totp-code" class="form-label">2FA Code</label>
-                            <input type="text" id="login-totp-code" class="form-control" autocomplete="one-time-code" maxlength="6" inputmode="numeric">
+                        <div class="collapse-field" id="totp-field" inert>
+                            <div>
+                                <div class="pb-3">
+                                    <label for="login-totp-code" class="form-label">2FA Code</label>
+                                    <input type="text" id="login-totp-code" class="form-control" autocomplete="one-time-code" maxlength="6" inputmode="numeric">
+                                </div>
+                            </div>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100 mb-3" id="login-button" onclick="loginUser()">Log in</button>
@@ -77,16 +81,14 @@
                             <input type="email" id="register-email" class="form-control" autocomplete="email">
                         </div>
 
-                        <div class="row mb-3">
-                            <div class="col-6">
-                                <label for="register-password" class="form-label">Password</label>
-                                <input type="password" id="register-password" class="form-control" autocomplete="new-password">
-                            </div>
+                        <div class="mb-3">
+                            <label for="register-password" class="form-label">Password</label>
+                            <input type="password" id="register-password" class="form-control" autocomplete="new-password">
+                        </div>
 
-                            <div class="col-6">
-                                <label for="register-password-confirm" class="form-label">Confirm password</label>
-                                <input type="password" id="register-password-confirm" class="form-control" autocomplete="new-password">
-                            </div>
+                        <div class="mb-3">
+                            <label for="register-password-confirm" class="form-label">Confirm password</label>
+                            <input type="password" id="register-password-confirm" class="form-control" autocomplete="new-password">
                         </div>
 
                         <div class="mb-3">
@@ -101,6 +103,25 @@
                             <span>Already have an account? <u role="button" onclick="toggleLoginForm()">Log in.</u></span>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="registerSuccessModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="registerSuccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="registerSuccessModalLabel">Account created</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    Your account has been created. You can now log in with your username and password.
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Log in</button>
                 </div>
             </div>
         </div>

@@ -1,6 +1,5 @@
 <?php
-session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . "/api/pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/validate-session.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/libraries/Authenticator.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/libraries/QRCode.php";
 

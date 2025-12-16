@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/validate-session.php";
 
 $url = $_SERVER['REQUEST_URI'];

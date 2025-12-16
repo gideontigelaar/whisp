@@ -25,6 +25,24 @@ function setButtonLoadingState(buttons, disableButton, loadingAnimation) {
     });
 }
 
+function disableButtonWhenEmpty(buttonId, inputIds) {
+    var button = document.getElementById(buttonId);
+    var inputs = inputIds.map(inputId => document.getElementById(inputId));
+
+    if (!button || inputs.includes(null)) {
+        return;
+    }
+
+    var updateButton = function() {
+        if (!button.querySelector('#loading')) {
+            button.disabled = inputs.some(input => input.value.trim() === '');
+        }
+    };
+
+    inputs.forEach(input => input.addEventListener('input', updateButton));
+    updateButton();
+}
+
 function showError(errorMessage, isAlert, buttonId) {
     const errorContainer = document.getElementById(buttonId + "-error");
 

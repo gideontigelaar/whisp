@@ -1,6 +1,6 @@
 <?php
-session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . "/api/pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/validate-session.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/totp-encryption.php";
 
 function sendError($message) {
     header('Content-Type: application/json');
@@ -56,32 +56,22 @@ try {
     $stmt = $pdo->prepare("UPDATE users SET password = :password WHERE user_id = :user_id");
     $stmt->execute(['password' => $hashedPassword, 'user_id' => $user_id]);
 
-    $stmt = $pdo->prepare("SELECT secret_key FROM totp_secrets WHERE user_id = :user_id");
+    $stmt = $pdo->prepare("SELECT secret_key, salt FROM totp_secrets WHERE user_id = :user_id");
     $stmt->execute(['user_id' => $user_id]);
     $totp_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($totp_data) {
-        $creds = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/creds.json"), true);
-        $salt = $creds['salt'];
-
-        $old_key = hash_pbkdf2('sha256', $current_password, $salt, 100000, 32, true);
-        $encrypted_data = base64_decode($totp_data['secret_key']);
-        $iv = substr($encrypted_data, 0, 16);
-        $encrypted_secret = substr($encrypted_data, 16);
-        $totp_secret = openssl_decrypt($encrypted_secret, 'aes-256-cbc', $old_key, 0, $iv);
+        $totp_secret = decryptTotpSecret($totp_data, $current_password);
 
         if ($totp_secret === false) {
             $pdo->rollBack();
             sendError('Failed to decrypt TOTP secret with current password.');
         }
 
-        $new_key = hash_pbkdf2('sha256', $new_password, $salt, 100000, 32, true);
-        $new_iv = openssl_random_pseudo_bytes(16);
-        $new_encrypted_secret = openssl_encrypt($totp_secret, 'aes-256-cbc', $new_key, 0, $new_iv);
-        $new_encrypted_data = base64_encode($new_iv . $new_encrypted_secret);
+        $encryptedTotp = encryptTotpSecret($totp_secret, $new_password);
 
-        $stmt = $pdo->prepare("UPDATE totp_secrets SET secret_key = :secret_key WHERE user_id = :user_id");
-        $stmt->execute(['secret_key' => $new_encrypted_data, 'user_id' => $user_id]);
+        $stmt = $pdo->prepare("UPDATE totp_secrets SET secret_key = :secret_key, salt = :salt WHERE user_id = :user_id");
+        $stmt->execute(['secret_key' => $encryptedTotp['secret_key'], 'salt' => $encryptedTotp['salt'], 'user_id' => $user_id]);
     }
 
     $pdo->commit();

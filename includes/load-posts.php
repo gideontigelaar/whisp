@@ -1,8 +1,9 @@
 <?php
-session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . "/api/pdo-connect.php";
+if (session_status() === PHP_SESSION_NONE) session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/validate-session.php";
 
 $loadedPosts = isset($_GET['loaded_posts']) ? json_decode($_GET['loaded_posts'], true) : [];
+$loadedPosts = is_array($loadedPosts) ? array_map('intval', $loadedPosts) : [];
 $loadedPostsStr = implode(',', $loadedPosts);
 $limit = 10;
 $url = isset($_GET['current_url']) ? $_GET['current_url'] : $_SERVER['REQUEST_URI'];

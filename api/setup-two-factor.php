@@ -1,6 +1,6 @@
 <?php
-session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . "/api/pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/validate-session.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/totp-encryption.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/libraries/Authenticator.php";
 
 function sendError($message) {
@@ -48,16 +48,10 @@ if ($exists) {
     sendError('2FA is already set up.');
 }
 
-$creds = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/creds.json"), true);
-$salt = $creds['salt'];
-$key = hash_pbkdf2('sha256', $password, $salt, 100000, 32, true);
-$iv = openssl_random_pseudo_bytes(16);
+$encryptedTotp = encryptTotpSecret($totp_secret, $password);
 
-$encrypted_secret = openssl_encrypt($totp_secret, 'aes-256-cbc', $key, 0, $iv);
-$encrypted_data = base64_encode($iv . $encrypted_secret);
-
-$stmt = $pdo->prepare("INSERT INTO totp_secrets (user_id, secret_key) VALUES (:user_id, :secret_key)");
-$stmt->execute(['user_id' => $user_id, 'secret_key' => $encrypted_data]);
+$stmt = $pdo->prepare("INSERT INTO totp_secrets (user_id, secret_key, salt) VALUES (:user_id, :secret_key, :salt)");
+$stmt->execute(['user_id' => $user_id, 'secret_key' => $encryptedTotp['secret_key'], 'salt' => $encryptedTotp['salt']]);
 
 sendSuccess();
 ?>

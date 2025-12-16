@@ -79,3 +79,38 @@ body {
 .theme-btn:checked + .theme-btn-label {
 	border-color: #0d6efd!important;
 }
+
+.login-card {
+    max-width: fit-content;
+}
+
+.login-card .form-control,
+.login-card .alert {
+    width: 0;
+    min-width: 100%;
+}
+
+.collapse-field {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.3s ease, opacity 0.3s ease;
+}
+
+.collapse-field.show {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+.collapse-field > div {
+    overflow: hidden;
+    margin: -0.25rem;
+    padding: 0.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .collapse-field,
+    .collapse-field.show {
+        transition: none;
+    }
+}

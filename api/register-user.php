@@ -1,9 +1,10 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/rate-limit.php";
 
-function sendError($message) {
+function sendError($message, $statusCode = 400) {
     header('Content-Type: application/json');
-    http_response_code(400);
+    http_response_code($statusCode);
     echo json_encode(['error' => $message]);
     exit();
 }
@@ -15,9 +16,13 @@ function sendSuccess() {
     exit();
 }
 
-$userName = strtolower($_POST['username']) ?? '';
+if (isRateLimited($pdo, 'register', 0.5)) {
+    sendError('Too many attempts. Please wait a moment and try again.', 429);
+}
+
+$userName = strtolower($_POST['username'] ?? '');
 $displayName = $_POST['username'] ?? '';
-$email = strtolower($_POST['email']) ?? '';
+$email = strtolower($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
 $passwordConfirm = $_POST['password_confirm'] ?? '';
 $inviteCode = $_POST['invite_code'] ?? '';

@@ -1,6 +1,5 @@
 <?php
-session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . "/api/pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/validate-session.php";
 
 function sendError($message) {
     header('Content-Type: application/json');
@@ -57,6 +56,9 @@ foreach ($posts as $post) {
 }
 
 $stmt = $pdo->prepare("DELETE FROM sessions WHERE user_id = :user_id");
+$stmt->execute(['user_id' => $user_id]);
+
+$stmt = $pdo->prepare("DELETE FROM totp_secrets WHERE user_id = :user_id");
 $stmt->execute(['user_id' => $user_id]);
 
 $stmt = $pdo->prepare("DELETE FROM users WHERE user_id = :user_id");

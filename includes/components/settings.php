@@ -62,7 +62,7 @@ $hasTotpSecret = $stmt->fetchColumn() ? true : false;
                             <span class="opacity-75 small"><?= $hasTotpSecret ? '<span class="text-success">Enabled</span>' : '<span class="text-danger">Disabled</span>' ?></span>
                         </div>
                         <?php if ($hasTotpSecret) { ?>
-                            <button class="btn btn-danger" type="button" onclick="disableTwoFactor()">Disable</button>
+                            <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#disableTwoFactorModal">Disable</button>
                         <?php } else { ?>
                             <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#twoFactorModal">Edit</button>
                         <?php } ?>
@@ -107,7 +107,7 @@ $hasTotpSecret = $stmt->fetchColumn() ? true : false;
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="edit-username-password">Current password</label>
+                        <label class="form-label" for="edit-username-password">Password</label>
                         <input class="form-control" type="password" id="edit-username-password" autocomplete="current-password">
                     </div>
                 </div>
@@ -139,7 +139,7 @@ $hasTotpSecret = $stmt->fetchColumn() ? true : false;
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="edit-email-password">Current password</label>
+                        <label class="form-label" for="edit-email-password">Password</label>
                         <input class="form-control" type="password" id="edit-email-password" autocomplete="current-password">
                     </div>
                 </div>
@@ -267,7 +267,7 @@ $hasTotpSecret = $stmt->fetchColumn() ? true : false;
                             <i class="ph <?= $deviceIcon ?> text-primary" style="font-size: 32px!important;"></i>
                             <div class="d-flex flex-column">
                                 <div class="d-flex gap-1 align-items-center">
-                                    <span><?= $deviceName ?></span>
+                                    <span><?= htmlspecialchars($deviceName) ?></span>
                                     <?= $isCurrentSession ? '<span class="badge text-bg-success">Current</span>' : '' ?>
                                 </div>
                                 <span class="opacity-75 small"><?= $ipAddress ?></span>
@@ -292,7 +292,36 @@ $hasTotpSecret = $stmt->fetchColumn() ? true : false;
     </div>
 </div>
 
-<?php if (!$hasTotpSecret) { ?>
+<?php if ($hasTotpSecret) { ?>
+    <div class="modal fade" id="disableTwoFactorModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="disableTwoFactorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
+            <div class="modal-content">
+                <form method="post">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="disableTwoFactorModalLabel">Disable two-factor authentication</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="alert alert-danger" id="disable-two-factor-button-error" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;"></div>
+
+                        <p class="mb-3">Are you sure you want to disable two-factor authentication? This will remove the extra layer of security from your account.</p>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="disable-two-factor-password">Password</label>
+                            <input class="form-control" type="password" id="disable-two-factor-password" autocomplete="current-password">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editSettingsModal">Cancel</button>
+                        <button class="btn btn-danger" type="submit" id="disable-two-factor-button" onclick="disableTwoFactor()">Disable</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php } else { ?>
     <div class="modal fade" id="twoFactorModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="twoFactorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered align-items-end align-items-sm-start">
             <div class="modal-content">

@@ -1,5 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/pdo-connect.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/rate-limit.php";
 
 function sendResponse($hasTwoFactor) {
     header('Content-Type: application/json');
@@ -8,11 +9,15 @@ function sendResponse($hasTwoFactor) {
     exit();
 }
 
-function sendError($message) {
+function sendError($message, $statusCode = 400) {
     header('Content-Type: application/json');
-    http_response_code(400);
+    http_response_code($statusCode);
     echo json_encode(['error' => $message]);
     exit();
+}
+
+if (isRateLimited($pdo, 'check-two-factor', 0.5)) {
+    sendError('Too many attempts. Please wait a moment and try again.', 429);
 }
 
 $userName = $_POST['username'] ?? '';

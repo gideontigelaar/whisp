@@ -1,19 +1,6 @@
 <?php
-session_start();
-try {
-    $creds = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/creds.json"), true);
-    $dbhost = $creds['dbhost'];
-    $dbname = $creds['dbname'];
-    $dbuser = $creds['dbuser'];
-    $dbpass = $creds['dbpass'];
-
-    $pdo = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    http_response_code(500);
-    echo "An error occurred. Please try again later.";
-    exit();
-}
+if (session_status() === PHP_SESSION_NONE) session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/pdo-connect.php";
 
 function validateSession($pdo, $sessionToken)
 {
@@ -24,21 +11,35 @@ function validateSession($pdo, $sessionToken)
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+function denyAccess()
+{
+    unset($_SESSION['user_id']);
+
+    if (strpos($_SERVER['PHP_SELF'], '/pages/') === 0) {
+        header('Location: /');
+    } else {
+        header('Content-Type: application/json');
+        http_response_code(401);
+        echo json_encode(['error' => 'Your session has expired. Please log in again.']);
+    }
+    exit();
+}
+
+$isLoginPage = basename($_SERVER['PHP_SELF']) === 'login.php';
+
 if (isset($_COOKIE['session_token'])) {
     $validSessionData = validateSession($pdo, $_COOKIE['session_token']);
     if ($validSessionData) {
         $_SESSION['user_id'] = $validSessionData['user_id'];
-        if (basename($_SERVER['PHP_SELF']) === 'login.php') {
+        if ($isLoginPage) {
             header('Location: /home');
             exit();
         }
-    } elseif (basename($_SERVER['PHP_SELF']) !== 'login.php') {
+    } elseif (!$isLoginPage) {
         setcookie('session_token', '', time() - 3600, '/');
-        header('Location: /');
-        exit();
+        denyAccess();
     }
-} elseif (basename($_SERVER['PHP_SELF']) !== 'login.php') {
-    header('Location: /');
-    exit();
+} elseif (!$isLoginPage) {
+    denyAccess();
 }
 ?>

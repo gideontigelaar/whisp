@@ -1,9 +1,12 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/validate-session.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/rate-limit.php";
+
+$postCooldown = getPostCooldown($pdo, $_SESSION['user_id']);
 
 $url = $_SERVER['REQUEST_URI'];
 if (strpos($url, '/post') !== false) {
-    $post_id = explode('/', $url)[2];
+    $post_id = (int) (explode('/', $url)[2] ?? 0);
 
     $stmt = $pdo->prepare("SELECT * FROM posts WHERE post_id = :post_id");
     $stmt->execute(['post_id' => $post_id]);
@@ -54,7 +57,7 @@ if (strpos($url, '/post') !== false) {
                     <div class="card-body">
                         <form class="d-flex gap-3" method="post">
                             <textarea class="form-control" id="post-content" rows="1" maxlength="250" placeholder="Post your reply" style="resize: none;"></textarea>
-                            <button class="btn btn-primary" type="submit" id="post-button" onclick="createPost(<?= $post_id ?>)">Post</button>
+                            <button class="btn btn-primary" type="submit" id="post-button" data-cooldown="<?= $postCooldown ?>" onclick="createPost(<?= $post_id ?>)">Post</button>
                         </form>
                     </div>
                 </div>

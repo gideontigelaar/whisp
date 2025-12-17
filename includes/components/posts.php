@@ -1,4 +1,4 @@
-<div class="card mb-3 post" id="post-<?= $post['post_id'] ?>">
+<div class="card mb-3 post" id="post-<?= $post['post_id'] ?>" data-display-name="<?= $displayName ?>" data-username="<?= $userName ?>">
     <div class="card-body">
         <div class="row">
             <div class="col-12 col-md-8 d-flex gap-2 align-items-center" role="button" onclick="window.location.href = '/profile/<?= $post['user_id'] ?>'">
@@ -15,7 +15,18 @@
                 <span class="opacity-75"><?= $createdAt ?></span>
             </div>
         </div>
-        <p class="mt-1 text-break" style="white-space: pre-wrap;"><?= $content ?></p>
+        <?php if ($content !== '') { ?>
+            <p class="mt-1 text-break" style="white-space: pre-wrap;"><?= $content ?></p>
+        <?php } ?>
+        <?php if ($attachments) { ?>
+            <div class="post-attachments post-attachments-<?= count($attachments) ?> mt-1 mb-3">
+                <?php foreach ($attachments as $attachment) { ?>
+                    <a href="<?= htmlspecialchars($attachment) ?>" target="_blank" rel="noopener noreferrer">
+                        <img src="<?= htmlspecialchars($attachment) ?>" alt="Attachment" loading="lazy">
+                    </a>
+                <?php } ?>
+            </div>
+        <?php } ?>
         <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex gap-2">
                 <div class="d-flex gap-1 align-items-center" role="button" onclick="likePost(<?= $post['post_id'] ?>)">
@@ -28,7 +39,7 @@
                 </div>
             </div>
             <div class="d-flex gap-2">
-                <i class="ph ph-share-fat text-primary" role="button" onclick="sharePost(<?= $post['post_id'] . ', \'' . $displayName . '\', \'' . $userName . '\'' ?>)"></i>
+                <i class="ph ph-share-fat text-primary" role="button" onclick="sharePost(<?= $post['post_id'] ?>)"></i>
                 <?php if ($_SESSION['user_id'] === $post['user_id']) { ?>
                     <i class="ph ph-trash text-danger" role="button" data-bs-toggle="modal" data-bs-target="#deletePostModal-<?= $post['post_id'] ?>"></i>
 

@@ -32,6 +32,7 @@ foreach ($posts as $post) {
     $profilePicture = $user['profile_picture'] && @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
     $isVerified = $user['is_verified'];
     $content = $post['content'];
+    $attachments = $post['attachments'] ? json_decode($post['attachments'], true) : [];
     $createdAt = date('M j, Y', strtotime($post['created_at']));
     $likeIcon = $post['likes'] && in_array($_SESSION['user_id'], json_decode($post['likes'])) ? 'ph-fill ph-heart' : 'ph ph-heart';
     $likeCount = $post['likes'] ? count(json_decode($post['likes'])) : 0;

@@ -15,4 +15,16 @@ function isRateLimited($pdo, $action, $intervalSeconds) {
 
     return false;
 }
+
+function getPostCooldown($pdo, $userId, $intervalSeconds = 60) {
+    $stmt = $pdo->prepare("SELECT TIMESTAMPDIFF(SECOND, MAX(created_at), NOW()) FROM posts WHERE user_id = :user_id");
+    $stmt->execute(['user_id' => $userId]);
+    $secondsSinceLastPost = $stmt->fetchColumn();
+
+    if ($secondsSinceLastPost === null) {
+        return 0;
+    }
+
+    return max(0, $intervalSeconds - $secondsSinceLastPost);
+}
 ?>

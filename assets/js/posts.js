@@ -1,3 +1,138 @@
+var attachments = [];
+var postCooldown = 0;
+
+document.addEventListener('DOMContentLoaded', function() {
+    var postContent = document.getElementById('post-content');
+    var attachmentUrl = document.getElementById('attachment-url');
+
+    if (postContent) {
+        postContent.addEventListener('input', updatePostButton);
+        startPostCooldown(parseInt(document.getElementById('post-button').getAttribute('data-cooldown')) || 0);
+    }
+
+    if (attachmentUrl) {
+        attachmentUrl.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                addAttachment();
+            }
+        });
+        attachmentUrl.addEventListener('input', function() {
+            attachmentUrl.classList.remove('is-invalid');
+        });
+        disableButtonWhenEmpty('add-attachment-button', ['attachment-url']);
+    }
+});
+
+function updatePostButton() {
+    var postButton = document.getElementById('post-button');
+    var postContent = document.getElementById('post-content');
+
+    if (postButton && postContent && !postButton.querySelector('#loading')) {
+        postButton.disabled = postCooldown > 0 || (postContent.value.trim() === '' && attachments.length === 0);
+    }
+}
+
+function startPostCooldown(seconds) {
+    var postButton = document.getElementById('post-button');
+    var buttonText = postButton.getAttribute('data-original-text') || postButton.textContent;
+    postButton.setAttribute('data-original-text', buttonText);
+    postCooldown = seconds;
+
+    var updateCountdown = function() {
+        postButton.textContent = postCooldown > 0 ? buttonText + ' (' + postCooldown + 's)' : buttonText;
+        updatePostButton();
+
+        if (postCooldown > 0) {
+            postCooldown--;
+            setTimeout(updateCountdown, 1000);
+        }
+    };
+
+    updateCountdown();
+}
+
+function toggleAttachmentField() {
+    var attachmentField = document.getElementById('attachment-field');
+    var show = !attachmentField.classList.contains('show');
+
+    attachmentField.classList.toggle('show', show);
+    attachmentField.inert = !show;
+
+    if (show) {
+        document.getElementById('attachment-url').focus();
+    }
+}
+
+function addAttachment() {
+    var attachmentUrl = document.getElementById('attachment-url');
+    var url = attachmentUrl.value.trim();
+
+    if (url === '' || attachments.length >= 4) {
+        return;
+    }
+
+    try {
+        var parsedUrl = new URL(url);
+        if (!['http:', 'https:'].includes(parsedUrl.protocol) || attachments.includes(url)) {
+            throw new Error();
+        }
+    } catch (error) {
+        attachmentUrl.classList.add('is-invalid');
+        return;
+    }
+
+    attachments.push(url);
+    attachmentUrl.value = '';
+    attachmentUrl.dispatchEvent(new Event('input'));
+    renderAttachmentPreviews();
+}
+
+function removeAttachment(url) {
+    attachments = attachments.filter(attachment => attachment !== url);
+    renderAttachmentPreviews();
+}
+
+function renderAttachmentPreviews() {
+    var attachmentPreviews = document.getElementById('attachment-previews');
+    var attachmentUrl = document.getElementById('attachment-url');
+    attachmentPreviews.innerHTML = '';
+
+    attachments.forEach(url => {
+        var preview = document.createElement('div');
+        preview.className = 'position-relative';
+
+        var image = document.createElement('img');
+        image.className = 'rounded-3 border attachment-preview';
+        image.alt = 'Attachment';
+        image.src = url;
+        image.onerror = function() {
+            removeAttachment(url);
+            attachmentUrl.value = url;
+            attachmentUrl.dispatchEvent(new Event('input'));
+            attachmentUrl.classList.add('is-invalid');
+        };
+
+        var removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'btn btn-dark rounded-circle position-absolute top-0 end-0 m-1 p-0 d-flex align-items-center justify-content-center attachment-remove';
+        removeButton.setAttribute('aria-label', 'Remove attachment');
+        removeButton.innerHTML = '<i class="ph ph-x"></i>';
+        removeButton.onclick = function() {
+            removeAttachment(url);
+        };
+
+        preview.append(image, removeButton);
+        attachmentPreviews.appendChild(preview);
+    });
+
+    attachmentPreviews.classList.toggle('d-none', attachments.length === 0);
+    attachmentPreviews.classList.toggle('d-flex', attachments.length > 0);
+    attachmentUrl.disabled = attachments.length >= 4;
+    attachmentUrl.placeholder = attachments.length >= 4 ? 'You can attach up to 4 images' : 'Paste an image URL';
+    updatePostButton();
+}
+
 function createPost(replyToPostId) {
     var content = document.getElementById('post-content').value;
     setButtonLoadingState(['post-button'], true, true);
@@ -12,11 +147,16 @@ function createPost(replyToPostId) {
             } else {
                 setButtonLoadingState(['post-button'], false, false);
                 var response = JSON.parse(xhr.responseText);
-                showError(response.error, true, 'post-button');
+
+                if (response.cooldown) {
+                    startPostCooldown(response.cooldown);
+                } else {
+                    showError(response.error, true, 'post-button');
+                }
             }
         }
     }
-    xhr.send('content=' + content + (replyToPostId ? '&reply_to_post_id=' + replyToPostId : ''));
+    xhr.send('content=' + encodeURIComponent(content) + '&attachments=' + encodeURIComponent(JSON.stringify(attachments)) + (replyToPostId ? '&reply_to_post_id=' + replyToPostId : ''));
 }
 
 var loadedPosts = [];
@@ -25,7 +165,7 @@ var loading = false;
 
 function loadPosts() {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '../../includes/load-posts.php?loaded_posts=' + JSON.stringify(loadedPosts) + '&current_url=' + currentUrl, true);
+    xhr.open('GET', '../../includes/load-posts.php?loaded_posts=' + encodeURIComponent(JSON.stringify(loadedPosts)) + '&current_url=' + encodeURIComponent(currentUrl), true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
@@ -96,8 +236,12 @@ function likePost(postId) {
 
 let notificationActive = false;
 
-function sharePost(postId, displayName, userName) {
+function sharePost(postId) {
     if (notificationActive) return;
+
+    var post = document.getElementById('post-' + postId);
+    var displayName = post.getAttribute('data-display-name');
+    var userName = post.getAttribute('data-username');
 
     if (navigator.share) {
         navigator.share({

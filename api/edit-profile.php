@@ -1,5 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/api/validate-session.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/image-validation.php";
 
 function sendError($message) {
     header('Content-Type: application/json');
@@ -15,27 +16,10 @@ function sendSuccess() {
     exit();
 }
 
-function isImage($url) {
-    $headers = get_headers($url, 1);
-
-    if ($headers !== false && strpos($headers[0], '200') !== false) {
-        $mime_type = $headers["Content-Type"];
-
-        if (strpos($mime_type, "image/") === 0 && $mime_type !== "image/gif") {
-            $image_size = (int)$headers["Content-Length"];
-
-            if ($image_size <= 1048576) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 $userId = $_SESSION['user_id'];
-$displayName = htmlspecialchars($_POST['display_name']) ?? '';
-$profilePicture = $_POST['profile_picture'] ?? '';
-$bio = htmlspecialchars($_POST['bio']) ?? '';
+$displayName = htmlspecialchars($_POST['display_name'] ?? '');
+$profilePicture = trim($_POST['profile_picture'] ?? '');
+$bio = htmlspecialchars($_POST['bio'] ?? '');
 
 if (empty($userId) || empty($displayName) || empty($bio)) {
     sendError('All fields, except profile picture, are required.');

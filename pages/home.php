@@ -1,4 +1,9 @@
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/api/validate-session.php" ?>
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/validate-session.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/api/rate-limit.php";
+
+$postCooldown = getPostCooldown($pdo, $_SESSION['user_id']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,15 +35,29 @@
                         <form method="post">
                             <textarea class="form-control mb-3" id="post-content" rows="3" maxlength="250" placeholder="What is happening?!" style="resize: none;"></textarea>
 
+                            <div class="collapse-field" id="attachment-field" inert>
+                                <div>
+                                    <div class="pb-3">
+                                        <div class="input-group has-validation">
+                                            <input class="form-control" type="url" id="attachment-url" placeholder="Paste an image URL" autocomplete="off">
+                                            <button class="btn btn-outline-primary" type="button" id="add-attachment-button" onclick="addAttachment()">Add</button>
+                                            <div class="invalid-feedback">This link is not a valid image.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-none flex-wrap gap-2 mb-3" id="attachment-previews"></div>
+
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="d-flex gap-2">
-                                    <i class="ph ph-image-square text-primary" role="button"></i>
+                                    <i class="ph ph-image-square text-primary" role="button" id="attachment-toggle" onclick="toggleAttachmentField()"></i>
                                     <i class="ph ph-smiley text-primary" role="button"></i>
                                 </div>
 
                                 <div class="text-danger" id="post-button-error" style="opacity: 0;"></div>
 
-                                <button class="btn btn-primary" type="submit" id="post-button" onclick="createPost()">Post</button>
+                                <button class="btn btn-primary" type="submit" id="post-button" data-cooldown="<?= $postCooldown ?>" onclick="createPost()">Post</button>
                             </div>
                         </form>
                     </div>

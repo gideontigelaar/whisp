@@ -175,12 +175,12 @@ function loadPosts() {
                 if (responseHTML === '') {
                     window.removeEventListener('scroll', scrollListener);
                     if (postsContainer.innerHTML.trim() === '') {
-                        postsContainer.innerHTML += '<div class="text-center opacity-50 py-1">-- There\'s nothing here. --</div>';
+                        postsContainer.insertAdjacentHTML('beforeend', '<div class="text-center opacity-50 py-1">-- There\'s nothing here. --</div>');
                     } else {
-                        postsContainer.innerHTML += '<div class="text-center opacity-50 py-1">-- That\'s all for now. --</div>';
+                        postsContainer.insertAdjacentHTML('beforeend', '<div class="text-center opacity-50 py-1">-- That\'s all for now. --</div>');
                     }
                 } else {
-                    postsContainer.innerHTML += responseHTML;
+                    postsContainer.insertAdjacentHTML('beforeend', responseHTML);
                     var posts = document.getElementsByClassName('post');
                     for (var i = 0; i < posts.length; i++) {
                         var post = posts[i];

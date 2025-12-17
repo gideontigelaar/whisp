@@ -11,13 +11,13 @@ $conversations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 foreach ($conversations as $conversation) {
     $userId = $conversation['user_id'];
     $displayName = $conversation['display_name'];
-    $profilePicture = $conversation['profile_picture'] && @getimagesize($conversation['profile_picture']) ? $conversation['profile_picture'] : '/assets/images/default-pfp.png';
+    $profilePicture = $conversation['profile_picture'] ?: '/assets/images/default-pfp.png';
     $isVerified = $conversation['is_verified'];
     $content = $conversation['content'];
     $unreadCount = $conversation['unread_count'];
 ?>
 <div class="d-flex align-items-center gap-2 p-3 conversation <?= $selectedUserId == $userId ? 'bg-body-secondary' : '' ?>" role="button" onclick="window.location.href = '/messages/<?= $userId ?>'" data-message-id="<?= $conversation['message_id'] ?>" data-unread-count="<?= $unreadCount ?>">
-    <img class="rounded-circle" src="<?= $profilePicture ?>" width="48" height="48" alt="PFP">
+    <img class="rounded-circle pfp" src="<?= htmlspecialchars($profilePicture) ?>" width="48" height="48" alt="PFP" loading="lazy" decoding="async">
     <div class="d-flex flex-column text-truncate">
         <div class="d-flex align-items-center gap-1">
             <span class="fs-5 text-truncate"><?= $displayName ?></span>

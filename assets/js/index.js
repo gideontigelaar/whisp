@@ -25,6 +25,28 @@ function setButtonLoadingState(buttons, disableButton, loadingAnimation) {
     });
 }
 
+document.addEventListener('load', function(event) {
+    if (event.target.tagName === 'IMG' && event.target.closest('.post-attachments')) {
+        event.target.classList.add('loaded');
+    }
+}, true);
+
+document.addEventListener('error', function(event) {
+    var image = event.target;
+
+    if (image.tagName !== 'IMG') {
+        return;
+    }
+
+    if (image.classList.contains('pfp')) {
+        if (!image.src.endsWith('/assets/images/default-pfp.png')) {
+            image.src = '/assets/images/default-pfp.png';
+        }
+    } else if (image.closest('.post-attachments')) {
+        image.classList.add('failed');
+    }
+}, true);
+
 function disableButtonWhenEmpty(buttonId, inputIds) {
     var button = document.getElementById(buttonId);
     var inputs = inputIds.map(inputId => document.getElementById(inputId));

@@ -11,13 +11,13 @@
                 $userId = $user['user_id'];
                 $userName = $user['username'];
                 $displayName = $user['display_name'];
-                $profilePicture = $user['profile_picture'] && @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
+                $profilePicture = $user['profile_picture'] ?: '/assets/images/default-pfp.png';
                 $bio = $user['bio'];
                 $isVerified = $user['is_verified'];
                 $createdAt = date('F Y', strtotime($user['created_at']));
             ?>
             <div class="py-2 d-flex gap-2 align-items-center" role="button" onclick="window.location.href = '/profile/<?= $userId ?>'">
-                <img class="rounded-circle" src="<?= $profilePicture ?>" width="32" height="32" alt="PFP">
+                <img class="rounded-circle pfp" src="<?= htmlspecialchars($profilePicture) ?>" width="32" height="32" alt="PFP" loading="lazy" decoding="async">
                 <div class="d-flex gap-1 align-items-center text-truncate">
                     <span class="fs-5 text-truncate"><?= $displayName ?></span>
                     <?php if ($isVerified) { ?>

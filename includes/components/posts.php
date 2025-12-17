@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12 col-md-8 d-flex gap-2 align-items-center" role="button" onclick="window.location.href = '/profile/<?= $post['user_id'] ?>'">
-                <img class="rounded-circle" src="<?= $profilePicture ?>" width="32" height="32" alt="PFP">
+                <img class="rounded-circle pfp" src="<?= htmlspecialchars($profilePicture) ?>" width="32" height="32" alt="PFP" loading="lazy" decoding="async">
                 <div class="d-flex gap-1 align-items-center text-truncate">
                     <span class="fs-5 text-truncate"><?= $displayName ?></span>
                     <?php if ($isVerified) { ?>
@@ -22,7 +22,7 @@
             <div class="post-attachments post-attachments-<?= count($attachments) ?> mt-1 mb-3">
                 <?php foreach ($attachments as $attachment) { ?>
                     <a href="<?= htmlspecialchars($attachment) ?>" target="_blank" rel="noopener noreferrer">
-                        <img src="<?= htmlspecialchars($attachment) ?>" alt="Attachment" loading="lazy">
+                        <img src="<?= htmlspecialchars($attachment) ?>" alt="Attachment" loading="lazy" decoding="async">
                     </a>
                 <?php } ?>
             </div>

@@ -16,7 +16,7 @@ if (strpos($url, '/post') !== false) {
 
     $userName = $user['username'];
     $displayName = $user['display_name'];
-    $profilePicture = $user['profile_picture'] && @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
+    $profilePicture = $user['profile_picture'] ?: '/assets/images/default-pfp.png';
     $isVerified = $user['is_verified'];
     $content = $post['content'];
     $attachments = $post['attachments'] ? json_decode($post['attachments'], true) : [];

@@ -21,7 +21,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $userName = $user['username'];
 $displayName = $user['display_name'];
-$profilePicture = $user['profile_picture'] && @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
+$profilePicture = $user['profile_picture'] ?: '/assets/images/default-pfp.png';
 $bio = $user['bio'];
 $isVerified = $user['is_verified'];
 $userCreatedAt = date('F Y', strtotime($user['created_at']));
@@ -57,7 +57,7 @@ $userCreatedAt = date('F Y', strtotime($user['created_at']));
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex gap-4 align-items-center">
-                                <img class="rounded-circle" src="<?= $profilePicture ?>" width="80" height="80" alt="PFP">
+                                <img class="rounded-circle pfp" src="<?= htmlspecialchars($profilePicture) ?>" width="80" height="80" alt="PFP" decoding="async">
                                 <div class="d-flex flex-column">
                                     <div class="d-flex gap-1 align-items-center">
                                         <h4 class="mb-0 text-break"><?= $displayName ?></h4>
@@ -91,7 +91,7 @@ $userCreatedAt = date('F Y', strtotime($user['created_at']));
 
                                                     <div class="mb-3">
                                                         <label class="form-label" for="edit-profile-picture">Profile picture</label>
-                                                        <input class="form-control" type="text" id="edit-profile-picture" value="<?= $profilePicture == '/assets/images/default-pfp.png' ? '' : $profilePicture ?>">
+                                                        <input class="form-control" type="text" id="edit-profile-picture" value="<?= htmlspecialchars($user['profile_picture'] ?? '') ?>">
                                                     </div>
 
                                                     <div class="mb-3">

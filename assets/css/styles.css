@@ -107,6 +107,7 @@ body {
 .post-attachments > a {
     min-height: 0;
     overflow: hidden;
+    background-color: var(--bs-secondary-bg);
 }
 
 .post-attachments img {
@@ -114,7 +115,24 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    background-color: var(--bs-secondary-bg);
+}
+
+.post-attachments img.loaded {
+    animation: fadeIn 0.3s ease;
+}
+
+.post-attachments img.failed {
+    visibility: hidden;
+}
+
+.pfp {
+    object-fit: cover;
+    background: var(--bs-secondary-bg) url("/assets/images/default-pfp.png") center / cover no-repeat;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .attachment-preview {

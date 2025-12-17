@@ -9,6 +9,10 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 $currentUserName = $user['username'];
 $currentUserEmail = $user['email'];
 
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM messages WHERE recipient_id = :user_id AND is_read = 0");
+$stmt->execute(['user_id' => $_SESSION['user_id']]);
+$unreadMessageCount = $stmt->fetchColumn();
+
 $navLinks = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/includes/nav-links.json"), true);
 $currentPage = basename($_SERVER['PHP_SELF']);
 
@@ -33,6 +37,16 @@ function isActiveIcon($page) {
     }
     return ($currentPage === $page) ? 'ph-fill' : 'ph';
 }
+
+function unreadBadge($page) {
+    global $unreadMessageCount;
+
+    if ($page !== 'messages.php') {
+        return '';
+    }
+
+    return '<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger unread-badge' . ($unreadMessageCount > 0 ? '' : ' d-none') . '">' . ($unreadMessageCount > 9 ? '9+' : $unreadMessageCount) . '</span>';
+}
 ?>
 <div class="d-none d-sm-flex sticky-top fs-5 p-sm-3 p-xl-4 flex-column justify-content-between overflow-y-auto card" style="height: 100dvh;">
     <div>
@@ -46,7 +60,10 @@ function isActiveIcon($page) {
                 <li class="nav-item">
                     <a class="nav-link px-0 py-3 text-body <?= isActiveText($link['file']) ?>" href="<?= $link['href'] ?>">
                         <div class="d-flex gap-xl-3 align-items-center">
-                            <i class="<?= isActiveIcon($link['file']) ?> <?= $link['icon'] ?>"></i>
+                            <div class="position-relative d-flex">
+                                <i class="<?= isActiveIcon($link['file']) ?> <?= $link['icon'] ?>"></i>
+                                <?= unreadBadge($link['file']) ?>
+                            </div>
                             <div class="d-none d-xl-block"><?= $link['text'] ?></div>
                         </div>
                     </a>
@@ -74,8 +91,9 @@ function isActiveIcon($page) {
         <?php foreach ($navLinks as $link) { ?>
             <li class="nav-item">
                 <a class="nav-link px-0 text-body <?= isActiveText($link['file']) ?>" href="<?= $link['href'] ?>">
-                    <div class="d-flex align-items-center">
+                    <div class="position-relative d-flex align-items-center">
                         <i class="<?= isActiveIcon($link['file']) ?> <?= $link['icon'] ?>"></i>
+                        <?= unreadBadge($link['file']) ?>
                     </div>
                 </a>
             </li>

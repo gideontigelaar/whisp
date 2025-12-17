@@ -1,11 +1,12 @@
 messagePollDelay = 3000;
 messagePollListeners.push(function(response) {
-    if (response.latest_message_id !== getLatestConversationMessageId()) {
+    if (response.latest_message_id !== getLatestConversationMessageId() || response.unread_count !== getUnreadConversationCount()) {
         loadNewMessages(false, loadConversations);
     }
 });
 
 document.addEventListener("DOMContentLoaded", function() {
+    messagePollUserId = getConversationUserId();
     scrollToLatestMessage(false);
     disableButtonWhenEmpty('message-button', ['message-content']);
     disableButtonWhenEmpty('new-message-button', ['recipient-username', 'new-message-content']);
@@ -25,6 +26,17 @@ function getLatestConversationMessageId() {
     });
 
     return latestMessageId;
+}
+
+function getUnreadConversationCount() {
+    var conversations = document.querySelectorAll('#conversations-container .conversation');
+    var unreadCount = 0;
+
+    conversations.forEach(conversation => {
+        unreadCount += parseInt(conversation.getAttribute('data-unread-count'));
+    });
+
+    return unreadCount;
 }
 
 function getLastMessageId() {

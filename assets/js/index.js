@@ -76,6 +76,7 @@ var messagePollDelay = 10000;
 var messagePollTimeout = null;
 var messagePollRequest = null;
 var messagePollListeners = [];
+var messagePollUserId = null;
 
 function pollMessages() {
     clearTimeout(messagePollTimeout);
@@ -86,7 +87,7 @@ function pollMessages() {
 
     var xhr = new XMLHttpRequest();
     messagePollRequest = xhr;
-    xhr.open('GET', '../../api/check-messages.php', true);
+    xhr.open('GET', '../../api/check-messages.php' + (messagePollUserId ? '?user_id=' + encodeURIComponent(messagePollUserId) : ''), true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             messagePollRequest = null;
@@ -104,7 +105,18 @@ function pollMessages() {
     xhr.send();
 }
 
+function updateUnreadBadges(unreadCount) {
+    document.querySelectorAll('.unread-badge').forEach(badge => {
+        badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+        badge.classList.toggle('d-none', unreadCount === 0);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    if (document.querySelector('.unread-badge')) {
+        messagePollListeners.push(response => updateUnreadBadges(response.unread_count));
+    }
+
     if (messagePollListeners.length > 0) {
         messagePollTimeout = setTimeout(pollMessages, messagePollDelay);
     }

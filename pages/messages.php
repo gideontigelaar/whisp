@@ -18,6 +18,9 @@ if (strpos($url, '/messages') !== false) {
             header('Location: /messages');
             exit();
         }
+
+        $stmt = $pdo->prepare("UPDATE messages SET is_read = 1 WHERE sender_id = :sender_id AND recipient_id = :recipient_id AND is_read = 0");
+        $stmt->execute(['sender_id' => $user_id, 'recipient_id' => $_SESSION['user_id']]);
     }
 }
 ?>

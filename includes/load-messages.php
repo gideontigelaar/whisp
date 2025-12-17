@@ -9,6 +9,9 @@ $stmt = $pdo->prepare("SELECT * FROM messages WHERE ((sender_id = :sender_id AND
 $stmt->execute(['sender_id' => $_SESSION['user_id'], 'recipient_id' => $conversationUserId, 'after_id' => $afterMessageId]);
 $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$stmt = $pdo->prepare("UPDATE messages SET is_read = 1 WHERE sender_id = :sender_id AND recipient_id = :recipient_id AND is_read = 0");
+$stmt->execute(['sender_id' => $conversationUserId, 'recipient_id' => $_SESSION['user_id']]);
+
 foreach ($messages as $message) {
     $isOwnMessage = $message['sender_id'] == $_SESSION['user_id'];
     $content = $message['content'];

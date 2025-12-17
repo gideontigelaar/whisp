@@ -71,3 +71,47 @@ function showError(errorMessage, isAlert, buttonId) {
         }, duration);
     }
 }
+
+var messagePollDelay = 10000;
+var messagePollTimeout = null;
+var messagePollRequest = null;
+var messagePollListeners = [];
+
+function pollMessages() {
+    clearTimeout(messagePollTimeout);
+
+    if (document.hidden || messagePollRequest) {
+        return;
+    }
+
+    var xhr = new XMLHttpRequest();
+    messagePollRequest = xhr;
+    xhr.open('GET', '../../api/check-messages.php', true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            messagePollRequest = null;
+
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                messagePollListeners.forEach(listener => listener(response));
+            }
+
+            if (xhr.status !== 401) {
+                messagePollTimeout = setTimeout(pollMessages, messagePollDelay);
+            }
+        }
+    }
+    xhr.send();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (messagePollListeners.length > 0) {
+        messagePollTimeout = setTimeout(pollMessages, messagePollDelay);
+    }
+});
+
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden && messagePollListeners.length > 0) {
+        pollMessages();
+    }
+});

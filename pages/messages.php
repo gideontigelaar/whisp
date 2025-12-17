@@ -3,16 +3,16 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/api/validate-session.php";
 
 $url = $_SERVER['REQUEST_URI'];
 if (strpos($url, '/messages') !== false) {
-    $user_id = explode('/', $url)[2];
+    $user_id = (int) (explode('/', $url)[2] ?? 0);
 
     if ($user_id) {
         $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $user_id]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $stmt = $pdo->prepare("SELECT * FROM messages WHERE (sender_id = :sender_id AND recipient_id = :recipient_id) OR (sender_id = :recipient_id AND recipient_id = :sender_id)");
+        $stmt = $pdo->prepare("SELECT 1 FROM messages WHERE (sender_id = :sender_id AND recipient_id = :recipient_id) OR (sender_id = :recipient_id AND recipient_id = :sender_id) LIMIT 1");
         $stmt->execute(['sender_id' => $_SESSION['user_id'], 'recipient_id' => $user_id]);
-        $conversation = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conversation = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$user || !$conversation) {
             header('Location: /messages');
@@ -87,57 +87,9 @@ if (strpos($url, '/messages') !== false) {
                             <span class="fs-5">Messages</span>
                             <i class="ph ph-note-pencil" role="button" data-bs-toggle="modal" data-bs-target="#newMessageModal"></i>
                         </div>
-                        <?php
-                        $stmt = $pdo->prepare("SELECT DISTINCT LEAST(sender_id, recipient_id) AS user1, GREATEST(sender_id, recipient_id) AS user2 FROM messages WHERE sender_id = :user_id OR recipient_id = :user_id");
-                        $stmt->execute(['user_id' => $_SESSION['user_id']]);
-                        $conversations = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                        $latestMessages = [];
-
-                        foreach ($conversations as $conversation) {
-                            $stmt = $pdo->prepare("SELECT * FROM messages WHERE (sender_id = :user1 AND recipient_id = :user2) OR (sender_id = :user2 AND recipient_id = :user1) ORDER BY created_at DESC LIMIT 1");
-                            $stmt->execute(['user1' => $conversation['user1'], 'user2' => $conversation['user2']]);
-                            $message = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                            $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
-                            $stmt->execute(['user_id' => $message['sender_id'] == $_SESSION['user_id'] ? $message['recipient_id'] : $message['sender_id']]);
-                            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                            $userId = $user['user_id'];
-                            $userName = $user['username'];
-                            $displayName = $user['display_name'];
-                            $profilePicture = $user['profile_picture'] && @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
-                            $bio = $user['bio'];
-                            $isVerified = $user['is_verified'];
-                            $createdAt = date('F Y', strtotime($user['created_at']));
-                            $content = $message['content'];
-
-                            $latestMessages[] = [
-                                'userId' => $userId,
-                                'userName' => $userName,
-                                'displayName' => $displayName,
-                                'profilePicture' => $profilePicture,
-                                'bio' => $bio,
-                                'isVerified' => $isVerified,
-                                'createdAt' => $createdAt,
-                                'content' => $content
-                            ];
-                        ?>
-                        <div class="d-flex align-items-center gap-2 p-3 <?= $user_id == $userId ? 'bg-body-secondary' : '' ?>" role="button" onclick="window.location.href = '/messages/<?= $userId ?>'">
-                            <img class="rounded-circle" src="<?= $profilePicture ?>" width="48" height="48" alt="PFP">
-                            <div class="d-flex flex-column text-truncate">
-                                <div class="d-flex align-items-center gap-1">
-                                    <span class="fs-5 text-truncate"><?= $displayName ?></span>
-                                    <?php if ($isVerified) { ?>
-                                        <i class="ph-fill ph-seal-check text-primary" style="font-size: 22px!important;"></i>
-                                    <?php } ?>
-                                </div>
-                                <span class="opacity-75 text-truncate"><?= $message['sender_id'] == $_SESSION['user_id'] ? 'You: ' : '' ?><?= $content ?></span>
-                            </div>
+                        <div id="conversations-container">
+                            <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/load-conversations.php" ?>
                         </div>
-                        <?php
-                        }
-                        ?>
                     </div>
 
                     <div class="card <?= $user_id ? 'd-flex' : 'd-none d-sm-flex' ?> message-container-height mb-0">
@@ -159,61 +111,9 @@ if (strpos($url, '/messages') !== false) {
                                     <span class="opacity-75">@<?= $userName ?></span>
                                 </div>
                             </div>
-                            <div class="card-body d-flex flex-column justify-content-between overflow-y-auto p-0" id="chat-container">
-                                <div class="d-flex flex-column gap-3 px-3 mt-3">
-                                    <?php
-                                    $profilePicture = $user['profile_picture'] && @getimagesize($user['profile_picture']) ? $user['profile_picture'] : '/assets/images/default-pfp.png';
-                                    $bio = $user['bio'];
-                                    $isVerified = $user['is_verified'];
-                                    $userCreatedAt = date('F Y', strtotime($user['created_at']));
-
-                                    $stmt = $pdo->prepare("SELECT * FROM messages WHERE (sender_id = :sender_id AND recipient_id = :recipient_id) OR (sender_id = :recipient_id AND recipient_id = :sender_id) ORDER BY created_at ASC");
-                                    $stmt->execute(['sender_id' => $_SESSION['user_id'], 'recipient_id' => $user_id]);
-                                    $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                                    foreach ($messages as $message) {
-                                        $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
-                                        $stmt->execute(['user_id' => $message['sender_id']]);
-                                        $sender = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                                        $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
-                                        $stmt->execute(['user_id' => $message['recipient_id']]);
-                                        $recipient = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                                        $senderId = $sender['user_id'];
-                                        $senderName = $sender['username'];
-                                        $senderDisplayName = $sender['display_name'];
-                                        $senderProfilePicture = $sender['profile_picture'] && @getimagesize($sender['profile_picture']) ? $sender['profile_picture'] : '/assets/images/default-pfp.png';
-                                        $senderBio = $sender['bio'];
-                                        $senderIsVerified = $sender['is_verified'];
-                                        $senderCreatedAt = date('F Y', strtotime($sender['created_at']));
-                                        $messageCreatedAt = date('H:i', strtotime($message['created_at']));
-
-                                        $recipientId = $recipient['user_id'];
-                                        $recipientName = $recipient['username'];
-                                        $recipientDisplayName = $recipient['display_name'];
-                                        $recipientProfilePicture = $recipient['profile_picture'] && @getimagesize($recipient['profile_picture']) ? $recipient['profile_picture'] : '/assets/images/default-pfp.png';
-                                        $recipientBio = $recipient['bio'];
-                                        $recipientIsVerified = $recipient['is_verified'];
-                                        $recipientCreatedAt = date('F Y', strtotime($recipient['created_at']));
-
-                                        $content = $message['content'];
-                                    ?>
-                                    <div class="d-flex flex-column gap-1 <?= $message['sender_id'] == $_SESSION['user_id'] ? 'align-items-end' : 'align-items-start' ?>">
-                                        <div class="card <?= $message['sender_id'] == $_SESSION['user_id'] ? 'text-bg-primary' : 'text-bg-secondary' ?>" style="max-width: 500px;">
-                                            <div class="card-body p-2 <?= $message['sender_id'] == $_SESSION['user_id'] ? 'text-end' : 'text-start' ?>">
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <div class="d-flex flex-column">
-                                                        <span><?= $content ?></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span class="opacity-75 small"><?= $messageCreatedAt ?></span>
-                                    </div>
-                                    <?php
-                                    }
-                                    ?>
+                            <div class="card-body d-flex flex-column justify-content-between overflow-y-auto p-0" id="chat-container" data-user-id="<?= $user_id ?>">
+                                <div class="d-flex flex-column gap-3 px-3 mt-3" id="messages-container">
+                                    <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/load-messages.php" ?>
                                 </div>
                                 <form class="d-flex gap-3 mt-3 pt-3 px-3 sticky-bottom bg-body input-container border-top" method="post" style="border-bottom-right-radius: 0.375rem;">
                                     <textarea class="form-control" id="message-content" rows="1" maxlength="250" placeholder="Message @<?= $userName ?>" style="resize: none;"></textarea>

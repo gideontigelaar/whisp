@@ -305,8 +305,6 @@ $hasTotpSecret = $stmt->fetchColumn() ? true : false;
                     <div class="modal-body">
                         <div class="alert alert-danger" id="disable-two-factor-button-error" style="opacity: 0; height: 0; margin: 0; padding: 0; white-space: nowrap; overflow: hidden;"></div>
 
-                        <p class="mb-3">Are you sure you want to disable two-factor authentication? This will remove the extra layer of security from your account.</p>
-
                         <div class="mb-3">
                             <label class="form-label" for="disable-two-factor-password">Password</label>
                             <input class="form-control" type="password" id="disable-two-factor-password" autocomplete="current-password">

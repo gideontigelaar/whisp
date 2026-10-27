@@ -52,7 +52,6 @@ $postCooldown = getPostCooldown($pdo, $_SESSION['user_id']);
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="d-flex gap-2">
                                     <i class="ph ph-image-square text-primary" role="button" id="attachment-toggle" onclick="toggleAttachmentField()"></i>
-                                    <i class="ph ph-smiley text-primary" role="button"></i>
                                 </div>
 
                                 <div class="text-danger" id="post-button-error" style="opacity: 0;"></div>

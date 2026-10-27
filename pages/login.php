@@ -117,7 +117,7 @@
                 </div>
 
                 <div class="modal-body">
-                    Your account has been created. You can now log in with your username and password.
+                    Your account has been created! You can now log in with your username and password.
                 </div>
 
                 <div class="modal-footer">
